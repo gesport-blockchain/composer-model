@@ -1,0 +1,27 @@
+query GetOffice {
+  description: "Select an office participant given its organization and office codes"
+  statement: 
+     SELECT pcs.valenciaport.Office
+     WHERE (_$organizationCode == organization.code AND _$officeCode == office.code)
+}
+
+query GetTransportOrders {
+  description: "Select a container asset given a transport order number from an ordering party"
+  statement: 
+     SELECT pcs.valenciaport.Container
+     WHERE (transportOrders CONTAINS _$orderId)
+}
+
+query GetReleaseOrders {
+  description: "Select a container asset given a release order number from an ordering party"
+  statement: 
+     SELECT pcs.valenciaport.Container
+     WHERE (releaseOrders CONTAINS _$orderId)
+}
+
+query GetAcceptanceOrders {
+  description: "Select a container asset given an acceptance order number from an ordering party"
+  statement: 
+     SELECT pcs.valenciaport.Container
+     WHERE (acceptanceOrders CONTAINS _$orderId)
+}
