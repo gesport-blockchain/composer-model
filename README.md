@@ -1,9 +1,9 @@
 ![GESPORT 4.0](https://github.com/gesport-blockchain/composer-model/blob/master/Logo%202.png)
 
-# valenciaport-pcs
+# Modelo de red de negocios para la gestión portuaria del contenedor 4.0 
 
-Valenciaport PCS POC
+Este modelo se ha desarrollado he Hyperledger Composer para la prueba de concepto de blockchain de Valenciaport.
 
-Proyecto financiado por la Agencia Valenciana de innovación.
+El proyecto Gestión Portuaria del Contenedor 4.0 ha sido financiado por la Agencia Valenciana de innovación.
 
 ![AGÈNCIA VALENCIANA DE LA INNOVACIÓ](https://github.com/gesport-blockchain/composer-model/blob/master/avi.png)
