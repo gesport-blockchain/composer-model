@@ -4,4 +4,4 @@ Valenciaport PCS POC
 
 Proyecto financiado por la Agencia Valenciana de innovación.
 
-![alt text](http://url/to/img.png)
+![GESPORT 4.0](https://github.com/gesport-blockchain/composer-model/blob/master/Logo%202.png)
