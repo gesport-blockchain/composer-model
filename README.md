@@ -4,7 +4,7 @@
 
 Este modelo se ha desarrollado he Hyperledger Composer para la prueba de concepto de blockchain de Valenciaport.
 
-Puede acceder, analizar y probar los modelos en el siguiente enlace: http://62.43.227.68:8081/identity
+Puede acceder, analizar y probar los modelos en el siguiente enlace: http://62.43.227.68:8081/
 
 
 
