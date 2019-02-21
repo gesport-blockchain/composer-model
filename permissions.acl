@@ -20,76 +20,92 @@ rule NetworkAdminUser {
     action: ALLOW
 }
 
+rule CreateAll {
+    description: "Create Office participant to business networkd resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "net.gesport.**"
+    action: ALLOW
+}
+
 rule CreateOffice {
     description: "Create Office participant to business networkd resources"
     participant: "org.hyperledger.composer.system.NetworkAdmin"
     operation: ALL
-    resource: "pcs.valenciaport.Office"
+    resource: "net.gesport.Office"
+    action: ALLOW
+}
+
+rule NetworkAdminOffice {
+    description: "Grant business network administrators full access to user resources"
+    participant: "net.gesport.Office"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
     action: ALLOW
 }
 
 rule CreateHistorianRecord {
     description: "Grant Office participant full access to business networkd resources"
-    participant: "pcs.valenciaport.Office"
-    operation: CREATE
+    participant: "net.gesport.Office"
+    operation: ALL
     resource: "org.hyperledger.composer.system.HistorianRecord"
     action: ALLOW
 }
 
 rule ReadAssetRegistry {
     description: "Grant  participant read access to ReadAssetRegistry"
-    participant: "pcs.valenciaport.Office"
-    operation: READ
+    participant: "net.gesport.Office"
+    operation: ALL
     resource: "org.hyperledger.composer.system.AssetRegistry"
     action: ALLOW
 }
 
 rule ReadHistorianRecord {
     description: "Grant participant read access to HistorianRecord"
-    participant: "pcs.valenciaport.Office"
-    operation: READ
+    participant: "net.gesport.Office"
+    operation: ALL
     resource: "org.hyperledger.composer.system.HistorianRecord"
     action: ALLOW
 }
 
 rule ReadTransactionRegistry {
     description: "Grant participant read access to TransactionRegistry"
-    participant: "pcs.valenciaport.Office"
-    operation: READ
+    participant: "net.gesport.Office"
+    operation: ALL
     resource: "org.hyperledger.composer.system.TransactionRegistry"
     action: ALLOW
 }
 
 rule ReadResources {
     description: "Grant Office participant full access to business network resources"
-    participant: "pcs.valenciaport.Office"
-    operation: READ
+    participant: "net.gesport.Office"
+    operation: ALL
     resource: "org.hyperledger.composer.system.Network"
     action: ALLOW
 }
 
+/*
 rule VesselPortCallAccess {
     description: "Deny acces to vessel port call asset, unless participant is shippingAgent"
-    participant(p): "pcs.valenciaport.Office"
-    operation: ALL 
-    resource(r): "pcs.valenciaport.VesselPortCall"
-    condition: (v.shippingAgent.office.getIdentifier() != p.getIdentifier() && p.types.indexOf("PCS") == -1 )
+    participant(p): "net.gesport.Office"
+    operation: CREATE 
+    resource(r): "net.gesport.VesselPortCall"
+    condition: (v.shippingAgent.office.getIdentifier() != p.getIdentifier() && p.types.indexOf("PCS") == 0 )
     action: DENY
 }
-
+*/
 rule ParticipantAccess {
     description: "Grant Office participant full access to business networkd resources"
-    participant(p): "pcs.valenciaport.Office"
+    participant: "net.gesport.Office"
     operation: ALL
-    resource(r): "pcs.valenciaport.Office"
-    condition: (r.getIdentifier() != p.getIdentifier())
-    action: DENY
+    resource: "net.gesport.Office"
+    action: ALLOW
 }
 
 rule AccessNetwork {
     description: "Grant Office participant full access to business networkd resources"
-    participant: "pcs.valenciaport.Office"
+    participant: "net.gesport.Office"
     operation: ALL
-    resource: "pcs.valenciaport.**"
+    resource: "net.gesport.**"
     action: ALLOW
 }

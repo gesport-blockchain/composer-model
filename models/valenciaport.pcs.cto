@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-namespace pcs.valenciaport
+namespace net.gesport
 
 /***********************************************************************************
  *                                PARTICIPANTS
@@ -20,22 +20,22 @@ namespace pcs.valenciaport
 
 /**
  * The office of an organization will be the main participant of the business network
- * This office will have associated a code and name for the organization, a code and 
- * name for the office, an address, email and phone to contact 
- * @param {String} officeId	Unique identifier (organization.code@office.code)
- * @param {Code} organization	Organization code and name
- * @param {Code} office	Office code and name
- * @param {OrganizationType[]} type	The organization type
- * @param {Address} address	The address
- * @param {String} contactName	Office contact name
- * @param {String} email	Office contact e-mail
- * @param {String} phone	Office contact phone
- * @param {String[]} agentOf List of companies (organization.code) this office is agent of
+ * This office will have associated a code and name for the organization, a code and
+ * name for the office, an address, email and phone to contact
+ * @param {String} officeId	-Unique identifier (organization.code@office.code)
+ * @param {Code} organization -Organization code and name
+ * @param {Code} office -Office code and name
+ * @param {OrganizationType[]} type -The organization type
+ * @param {Address} address -The address
+ * @param {String} contactName -Office contact name
+ * @param {String} email -Office contact e-mail
+ * @param {String} phone -Office contact phone
+ * @param {String[]} agentOf -List of companies (organization.code) this office is agent of
  */
 participant Office identified by officeId {
-  o String officeId 
+  o String officeId
   o Code organization
-  o Code office 
+  o Code office
   o OrganizationType[] types
   o Address address optional
   o String contactName optional
@@ -50,20 +50,20 @@ participant Office identified by officeId {
 
 /**
  * Types of organization
- * @enum Carrier			Sea/Ocean carrier
- * @enum ShippingAgent		Shipping agent
- * @enum Trader			Importer or Exporter
- * @enum Forwarder		Freight forwarder
- * @enum Terminal		Container Terminal
- * @enum EmptyDepot Empty container depot
- * @enum PCS			PCS Operator
- * @enum PortAuthority		Port Authority
- * @enum Customs		Customs Authority
- * @enum GovernmentAgency Other government agency
- * @enum CustomsBroker		Customs broker
- * @enum RoadHaulier		Road Haulier
- * @enum RailHaulier		Rail Haulier
- * @enum Bank		Bank
+ * @enum SeaCarrier -Sea/Ocean carrier
+ * @enum ShippingAgent -Shipping agent
+ * @enum Trader	-Importer or Exporter
+ * @enum Forwarder -Freight forwarder
+ * @enum Terminal -Container Terminal
+ * @enum EmptyDepot -Empty container depot
+ * @enum PCS -PCS Operator
+ * @enum PortAuthority -Port Authority
+ * @enum Customs -Customs Authority
+ * @enum GovernmentAgency -Other government agency
+ * @enum CustomsBroker -Customs broker
+ * @enum RoadHaulier -Road Haulier
+ * @enum RailHaulier -Rail Haulier
+ * @enum Bank -Bank
  */
 enum OrganizationType {
  o SeaCarrier
@@ -85,26 +85,28 @@ enum OrganizationType {
 
 /**
  * Asset's status
- * @enum REGISTERED	The asset is only registered. It can be changed
- * @enum RELEASED The asset is released. Changes will depend of the business logic
- * @enum CANCELLED	The asset is cancelled. It can be re-created
- * @enum ACTIVE		The asset is active. It cannot be changed, only updated
- * @enum FINISHED	The asset is finished. It cannot be changed.
+ * @enum REGISTERED	-The asset is only registered. It can be changed
+ * @enum RELEASED -The asset is released. Changes will depend of the business logic
+ * @enum CANCELLED -The asset is cancelled. It can be re-created
+ * @enum ACTIVE -The asset is active. It cannot be changed, only updated
+ * @enum ARRIVED -The asset has arrived
+ * @enum FINISHED -The asset is finished. It cannot be changed.
  */
 enum Status {
   o REGISTERED
   o RELEASED
   o CANCELLED
   o ACTIVE
+  o ARRIVED
   o FINISHED
 }
 
-/** 
+/**
  * Types of business events
- * @enum PLANNED The event is generated in a transaction for planning
- * @enum ORDER The event is generated in a transaction for ordering
- * @enum DECLARATION The event is generated in a transaction for declaring an asset
- * @enum NOTIFICATION The event is generated in a transaction for notifying an actual operation
+ * @enum PLANNED -The event is generated in a transaction for planning
+ * @enum ORDER -The event is generated in a transaction for ordering
+ * @enum DECLARATION -The event is generated in a transaction for declaring an asset
+ * @enum NOTIFICATION -The event is generated in a transaction for notifying an actual operation
  */
 enum EventType {
   o PLANNED
@@ -118,14 +120,14 @@ enum EventType {
  * @enum CREATE The event is reporting a creation function of the transaction
  * @enum CHANGE The event is reporting a change function of the transaction
  * @enum UPDATE The event is reporting an update function of the transaction
- * @enum NOTIFY The event is reporting a notify function of the transaction 
+ * @enum ARRIVAL -The event is generated in a transaction for notifying the arrival
  * @enum CANCEL The event is reporting a cancel function of the transaction
  */
  enum EventFunction {
    o CREATE
    o CHANGE
    o UPDATE
-   o NOTIFY
+   o ARRIVAL
    o CANCEL
  }
 
@@ -158,7 +160,7 @@ enum PaymentMethod {
 /**
  * Types of transport
  * @enum MERCHANT	The inland transport is managed by the customer (blHolder)
- * @enum CARRIER	The inland transport is managed by the carrier. 
+ * @enum CARRIER	The inland transport is managed by the carrier.
  * @enum AGENT The inland transport is managed by the shipping agency
  */
 enum HaulierArrangement {
@@ -170,7 +172,7 @@ enum HaulierArrangement {
 /**
  * The status of the container in relation of its contents
  * @enum FULL	The container is full
- * @enum EMPTY	The container is empty 
+ * @enum EMPTY	The container is empty
  */
 enum ContainerStatus {
   o FULL
@@ -180,7 +182,7 @@ enum ContainerStatus {
 /**
  * The operation of the vessel
  * @enum LOAD	The loading operation
- * @enum DISCHARGE	The discharge operation 
+ * @enum DISCHARGE	The discharge operation
  */
 enum VesselOperation {
   o LOAD
@@ -193,7 +195,7 @@ enum VesselOperation {
  * @enum RAIL
  * @enum SEA
  * @enum RIVER
- * @enum AIR 
+ * @enum AIR
  */
 enum TransportMode {
   o ROAD
@@ -210,20 +212,20 @@ enum TransportMode {
 
 /**
  * Generic code concept
- * @param {String} code		The coded part
- * @param {String} name		The description part
+ * @param {String} code -The coded part
+ * @param {String} name -The description part
  */
 concept Code {
   o String code optional
   o String name optional
 }
 
-/** 
+/**
  * Generic address concept
- * @param {String} street		The street 
- * @param {String} city		The city 
- * @param {String} postalCode	The postal code
- * @param {Code} country		The country code
+ * @param {String} street -The street
+ * @param {String} city -The city
+ * @param {String} postalCode -The postal code
+ * @param {Code} country -The country code
  */
 concept Address {
   o String street
@@ -233,18 +235,18 @@ concept Address {
 }
 
 /**
- * The party is an organization involved in a business transaction. 
- * If this party is associated to an office, then the party will be part of 
- * the business network. If not, then the party will be only referenced in the 
- * assets and transactions. 
- * @param {Office} office		The participant office associated with the party
- * @param {Code} organization 	The organization code and name
- * @param {Code} officeCode	The office code and name
- * @param {String} email		Office contact e-mail
- * @param {String} phone		Office contact phone
- */ 
+ * The party is an organization involved in a business transaction.
+ * If this party is associated to an office, then the party will be part of
+ * the business network. If not, then the party will be only referenced in the
+ * assets and transactions.
+ * @param {String} officeId -The participant office associated with the party
+ * @param {Code} organization -The organization code and name
+ * @param {Code} officeCode -The office code and name
+ * @param {String} email -Office contact e-mail
+ * @param {String} phone -Office contact phone
+ */
 concept Party {
-  --> Office office optional
+  o String officeId optional
   o Code organization
   o String officeCode optional
   o Address address optional
@@ -254,15 +256,15 @@ concept Party {
 
 /**
  * References of documents or any other item
- * @param {String} referenceType	The type of reference
- * @param {String} referenceComment	A description of the type of reference
- * @param {String} referenceValue	The value of the reference type, if any
- * @param {String} unit The unit of the reference value, if any
- * @param {Integer} quantity The quantity of the reference, if any 
- * @param {DateTime} referenceDate	A date assigned to the reference  
- * @param {DateTime} expiryDate	A date of expiration of the reference  
- * @param {String} referenceStatus	A status assigned to the reference
- * @param {String} referenceHash	A hash of the referenced document
+ * @param {String} referenceType -The type of reference
+ * @param {String} referenceComment -A description of the type of reference
+ * @param {String} referenceValue -The value of the reference type, if any
+ * @param {String} unit -The unit of the reference value, if any
+ * @param {Integer} quantity -The quantity of the reference, if any
+ * @param {DateTime} referenceDate -A date assigned to the reference
+ * @param {DateTime} expiryDate -A date of expiration of the reference
+ * @param {String} referenceStatus -A status assigned to the reference
+ * @param {String} referenceHash -A hash of the referenced document
  */
 concept Reference {
   o String referenceType
@@ -277,13 +279,13 @@ concept Reference {
 }
 
 /**
- * Required certificates for  goods item
- * @param {String} certificateType	The type of certificate required
- * @param {Party} governmentAgency	The government agency in charge of the certificate
- * @param {Boolean} hasPhysicalInspection	If a physical inspection is required
- * @param {String} typeOfInspection The type of inspection
- * @param {String} inspectionId The identification/reference of the inspection 
- * @param {String[]} containers	The containers to inspect  
+ * Required certificates for goods item
+ * @param {String} certificateType -The type of certificate required
+ * @param {Party} governmentAgency -The government agency in charge of the certificate
+ * @param {Boolean} hasPhysicalInspection -If a physical inspection is required
+ * @param {String} typeOfInspection -The type of inspection
+ * @param {String} inspectionId -The identification/reference of the inspection
+ * @param {String[]} containers -The containers to inspect
  */
 concept RequiredCertificate {
   o String certificateType optional
@@ -296,29 +298,31 @@ concept RequiredCertificate {
 
 /**
  * Goods Item concept
- * @param {String} goodsItemNumber	The number assigned by customs to the item
- * @param {Code} goodsDescription		The Harmonized System code and the description of the goods 
- * @param {String} marksAndNumbers	Marks and numbers of the goods item
- * @param {Reference[]} customsReferences	Customs documents and references required by customs for the goods item
- * @param {Reference[]} goodsReferences	References of the goods item
- * @param {Package[]} packages	Packages included in the goods item
- * @param {Double} grossWeight	The goods item gross weight (in Kg) 
- * @param {Double} netWeight	The goods item net weight (in Kg) 
- * @param {Double} volume		The goods item volume (in m3)
- * @param {Measurement} additonalUnit Additional unit of the goods item
- * @param {DangerousGoodsItem[]} dangerousGoods	The dangerous goods substances of the goods
- * @param {String} countryOfOrigin The country of origin
- * @param {String} provinceOfOrigin The province of origin
- * @param {String} summaryDeclaration The summary declaration of the goods
- * @param {String} transitSummaryDeclaration The tansit summary declaration of the goods
- * @param {String} customsRegime The customs regime
- * @param {Reference} previousCustomsDocument The reference of the previous customs document
- * @param {Reference[]} documents References of documents associated to the goods item
- * @param {String[]} vins The vehicle identification numbers in the case the goods items are vehicles
- * @param {RequiredCertificate[]} requiredCertificates The required certificates of government agencies for the goods item   
+ * @param {String} goodsItemNumber -The number assigned by customs to the item
+ * @param {String} customsSection -The customs section is a number assigned to the manifest declaring agent by customs in joint services
+ * @param {Code} goodsDescription -The Harmonized System code and the description of the goods
+ * @param {String} marksAndNumbers -Marks and numbers of the goods item
+ * @param {Reference[]} customsReferences -Customs documents and references required by customs for the goods item
+ * @param {Reference[]} goodsReferences -References of the goods item
+ * @param {Package[]} packages -Packages included in the goods item
+ * @param {Double} grossWeight -The goods item gross weight (in Kg)
+ * @param {Double} netWeight -The goods item net weight (in Kg)
+ * @param {Double} volume -The goods item volume (in m3)
+ * @param {Measurement} additonalUnit -Additional unit of the goods item
+ * @param {DangerousGoodsItem[]} dangerousGoods -The dangerous goods substances of the goods
+ * @param {String} countryOfOrigin -The country of origin
+ * @param {String} provinceOfOrigin -The province of origin
+ * @param {String} summaryDeclaration -The summary declaration of the goods
+ * @param {String} transitSummaryDeclaration -The tansit summary declaration of the goods
+ * @param {String} customsRegime -The customs regime
+ * @param {Reference} previousCustomsDocument -The reference of the previous customs document
+ * @param {Reference[]} documents -References of documents associated to the goods item
+ * @param {String[]} vins -The vehicle identification numbers in the case the goods items are vehicles
+ * @param {RequiredCertificate[]} requiredCertificates -The required certificates of government agencies for the goods item
  */
 concept GoodsItem {
   o String goodsItemNumber optional
+  o String customsSection optional
   o Code goodsDescription optional
   o String marksAndNumbers optional
   o Reference[] customsReferences optional
@@ -343,9 +347,9 @@ concept GoodsItem {
 
 /**
  * Package concept
- * @param {Code} packageItem	Identification code of the packages (i.e. package position, outer, innter)
- * @param {Code} packageType	The package type code and name
- * @param {Integer} packageNumber	The number of packages
+ * @param {Code} packageItem -Identification code of the packages (i.e. package position, outer, innter)
+ * @param {Code} packageType -The package type code and name
+ * @param {Integer} packageNumber -The number of packages
  */
 concept Package {
   o Code packageItem optional
@@ -355,18 +359,18 @@ concept Package {
 
 /**
  * Dangerous goods item concept
- * @param {Code} undg		The UNDG code and name of the substance
- * @param {String} undgClass	The UNDG class
- * @param {String} packingGroup	The packing group
- * @param {String} imdgPage The IMDG page
- * @param {String} portAuthorization	The reference of the port Authorization
- * @param {Double} shipmentFlashpoint	The shipment flashpoint in celsius degrees
- * @param {Reference[]} additionalInfos Additional information about the dangerous goods
- * @param {Party} contact Contact information for emergencies
- * @param {Double} netWeight Net weight in KGM
- * @param {Double} netVolume Net volume in MTQ
- * @param {Double} radioactivity Radioactivity in megabecquerels
- * @param {Double} acidConcentration Percentage
+ * @param {Code} undg -The UNDG code and name of the substance
+ * @param {String} undgClass -The UNDG class
+ * @param {String} packingGroup -The packing group
+ * @param {String} imdgPage -The IMDG page
+ * @param {String} portAuthorization -The reference of the port Authorization
+ * @param {Double} shipmentFlashpoint -The shipment flashpoint in celsius degrees
+ * @param {Reference[]} additionalInfos -Additional information about the dangerous goods
+ * @param {Party} contact -Contact information for emergencies
+ * @param {Double} netWeight -Net weight in KGM
+ * @param {Double} netVolume -Net volume in MTQ
+ * @param {Double} radioactivity -Radioactivity in megabecquerels
+ * @param {Double} acidConcentration -Percentage
  */
 concept DangerousGoodsItem {
   o Code undg optional
@@ -387,22 +391,22 @@ concept DangerousGoodsItem {
  * Concept to described the equipment requested in the booking
  * The container transport movement details will be registered at equipment details level until the container
  * is assigned and a container asset can be generated.
- * @param {Code} containerType	The ISO code and name of the container type 
- * @param {Code} equipmentSupplier Code to determine in the equipment is carrrier supplied or shipper supplied
- * @param {Integer} numberOfUnits The number of units requested of the container type
- * @param {Integer} numberOfUnitsDelivered The number of units delivered of the container type
- * @param {Reference[]} instructions The coded instructions for the equipment
- * @param {Oversize} oversize The oversize dimensions for the equipment
- * @param {Reference} temperatureSetting The temperature setting for the container
- * @param {Party} releaseParty The release party for the empty container. 
- * @param {Party} haulier The haulier of the equipment (if carrier or agent haulage)
- * @param {Party} pickupParties The party where pick up the goods
- * @param {Party} acceptanceParty The acceptanceParty for the full container
- * @param {DateTime} requestedPickUpDate The requested date to pick up the goods
- * @param {String[]} movementIds The requested movement ids associated with the equipments without a container assigned.
- * @param {String[]} releaseOrders The release orders numbers of the equipments without a container assigned
- * @param {String[]} acceptanceOrders The acceptance orders numbers of the equipments without a container assigned
- * @param {String[]} transportOrders The transport orders numbers of the equipments without a container assigned
+ * @param {Code} containerType -The ISO code and name of the container type
+ * @param {Code} equipmentSupplier -Code to determine in the equipment is carrrier supplied or shipper supplied
+ * @param {Integer} numberOfUnits -The number of units requested of the container type
+ * @param {Integer} numberOfUnitsDelivered -The number of units delivered of the container type
+ * @param {Reference[]} instructions -The coded instructions for the equipment
+ * @param {Oversize} oversize -The oversize dimensions for the equipment
+ * @param {Reference} temperatureSetting -The temperature setting for the container
+ * @param {Party} releaseParty -The release party for the empty container.
+ * @param {Party} haulier -The haulier of the equipment (if carrier or agent haulage)
+ * @param {Party} pickupParties -The party where pick up the goods
+ * @param {Party} acceptanceParty -The acceptanceParty for the full container
+ * @param {DateTime} requestedPickUpDate -The requested date to pick up the goods
+ * @param {String[]} movementIds -The requested movement ids associated with the equipments without a container assigned.
+ * @param {String[]} releaseOrders -The release orders numbers of the equipments without a container assigned
+ * @param {String[]} acceptanceOrders -The acceptance orders numbers of the equipments without a container assigned
+ * @param {String[]} transportOrders -The transport orders numbers of the equipments without a container assigned
  */
 concept EquipmentDetails {
   o Code containerType optional
@@ -423,25 +427,27 @@ concept EquipmentDetails {
   o String[] transportOrders optional
 }
 
-/** 
+/**
  * Concept to be used in the container list transactions
  * When discharging full containers it is required the blId. When loading full containers it is required the bookingId.
  * All the data is optional and it will depend on the specific transaction
- * @param {String} containerNumber	The number of the container
- * @param {String} blNumber	The blNumber  
- * @param {String} bookingNumber	The booking number 
- * @param {Code} containerType	The ISO code and name of the container type 
- * @param {ContainerStatus} containerStatus	The status of the container (FULL or EMPTY)  
- * @param {Party} carrier	The sea carrier of the container  
- * @param {Party} shippingAgent	The carrier of the container  
- * @param {Party} terminalOperator	The terminal operator at the port
- * @param {Code} subsequentTransportMode	Code and name of subsequent transport mode
- * @param {Double} grossWeight	The gross weight of the container
- * @param {Double} tareWeight	The tare weight of the container (Kg)
- * @param {DateTime} expectedTime	The time expected for the discharge operation
- * @param {Double} operationTime	The time of the loading or discharge operation
- * @param {Seal[]} seals		The seals attached to the container
- * @param {GoodsItem[]} goodsItems	The goods items stowed in the container
+ * @param {String} containerNumber -The number of the container
+ * @param {String} blNumber -The blNumber
+ * @param {String} bookingNumber -The booking number
+ * @param {Code} containerType -The ISO code and name of the container type
+ * @param {ContainerStatus} containerStatus -The status of the container (FULL or EMPTY)
+ * @param {Code} shipmentClause - The container can be LCL, FCL or empty
+ * @param {Party} carrier -The sea carrier of the container
+ * @param {Party} shippingAgent -The carrier of the container
+ * @param {Party} terminalOperator -The terminal operator at the port
+ * @param {Code} subsequentTransportMode -Code and name of subsequent transport mode
+ * @param {Double} grossWeight -The gross weight of the container
+ * @param {Double} tareWeight -The tare weight of the container (Kg)
+ * @param {DateTime} expectedTime -The time expected for the discharge operation
+ * @param {Double} operationTime -The time of the loading or discharge operation
+ * @param {Boolean} customsReleased - Container is released by customs (true,false)
+ * @param {Seal[]} seals -The seals attached to the container
+ * @param {GoodsItem[]} goodsItems -The goods items stowed in the container
  */
  concept ContainerItem {
   o String containerNumber
@@ -449,14 +455,14 @@ concept EquipmentDetails {
   o String bookingNumber optional
   o Code containerType optional
   o ContainerStatus containerStatus optional
-  o Code fullIndicator optional
+  o Code shipmentClause optional
   o Party carrier optional
   o Party shippingAgent optional
   o Party terminalOperator optional
   o Code subsequentTransportMode optional
   o Double grossWeight optional
   o Double tareWeight optional
-  o DateTime expectedTime
+  o DateTime expectedTime optional
   o DateTime operationTime optional
   o Boolean customsReleased optional
   o Seal[] seals optional
@@ -466,8 +472,8 @@ concept EquipmentDetails {
 
 /**
  * Seal concept
- * @param (String) owner	The owner of the seal
- * @param (String) number	The number of the seal
+ * @param (String) owner -The owner of the seal
+ * @param (String) number -The number of the seal
  */
 concept Seal {
   o String owner optional
@@ -476,11 +482,11 @@ concept Seal {
 
 /**
  * Container oversize concept
- * @param {Integer} front		The front oversize (cm)
- * @param {Integer} back		The back oversize (cm)
- * @param {Integer} left		The left oversize (cm)
- * @param {Integer} right		The right oversize (cm)
- * @param {Integer} up		The up oversize (cm)
+ * @param {Integer} front -The front oversize (cm)
+ * @param {Integer} back -The back oversize (cm)
+ * @param {Integer} left -The left oversize (cm)
+ * @param {Integer} right -The right oversize (cm)
+ * @param {Integer} up -The up oversize (cm)
  */
 concept Oversize {
   o Integer front optional
@@ -492,18 +498,18 @@ concept Oversize {
 
 /**
  * Exchange concept
- * @param {Amount} sourceCurrency		The source currency of the exchange
- * @param {Amount} destinationCurrency	The destination currency of the exchange 
+ * @param {Amount} sourceCurrency -The source currency of the exchange
+ * @param {Amount} destinationCurrency -The destination currency of the exchange
  */
 concept ExchangeRate {
   o Amount sourceCurrency
   o Amount destinationCurrency
 }
 
-/** 
+/**
  * Charge concept
- * @param {Code} concept		Code and name of the concept to be charged
- * @param {Amount} originalAmount Amount to be charged in the original currency
+ * @param {Code} concept -Code and name of the concept to be charged
+ * @param {Amount} originalAmount -Amount to be charged in the original currency
  */
 concept Charge {
   o Code concept
@@ -513,8 +519,8 @@ concept Charge {
 
 /**
  * Amount concept
- * @param {Double} value	Value of the amount
- * @param {Code} currency	Code and name of the currency
+ * @param {Double} value -Value of the amount
+ * @param {Code} currency -Code and name of the currency
  */
 concept  Amount {
   o Double value
@@ -523,9 +529,9 @@ concept  Amount {
 
 /**
  * Measurement concept
- * @param {Code} type	The type of measurement
- * @param {Double} value	The value of the measurement
- * @param {Code} unit		The unit of the measurement
+ * @param {Code} type -The type of measurement
+ * @param {Double} value -The value of the measurement
+ * @param {Code} unit -The unit of the measurement
  */
 concept Measurement {
   o Code type optional
@@ -534,13 +540,13 @@ concept Measurement {
 }
 /**
  * Transport details concept for road and rail transport mode
- * @param {String} licensePlate		The license plate of the truck (road transport)
- * @param {String} trailerPlate	The license plate of the truck (road transport)
- * @param {Code} driver	The identification (code) and name of the driver (road transport)
- * @param {String} phone The mobile phone contact number of the driver (road transport)
- * @param {String} trainVoyageNumber	The voyage number of the train (rail transport). Same train service can have same voyage number
- * @param {DateTime} trainVoyageDate The voyage date of the train (time will not be indicated)
- * @param {String} wagonNumber The number of the wagon where the container is loaded onto.
+ * @param {String} licensePlate -The license plate of the truck (road transport)
+ * @param {String} trailerPlate -The license plate of the truck (road transport)
+ * @param {Code} driver -The identification (code) and name of the driver (road transport)
+ * @param {String} phone -The mobile phone contact number of the driver (road transport)
+ * @param {String} trainVoyageNumber -The voyage number of the train (rail transport). Same train service can have same voyage number
+ * @param {DateTime} trainVoyageDate -The voyage date of the train (time will not be indicated)
+ * @param {String} wagonNumber -The number of the wagon where the container is loaded onto.
  */
 concept TransportDetails {
   o String licensePlate optional
@@ -553,7 +559,7 @@ concept TransportDetails {
 }
 
 /**
- * Concept for the movement details indicated by the carrier. 
+ * Concept for the movement details indicated by the carrier.
  * @param {String} orderId The order id of a transport, release or acceptance order. It is formed by the orderNumber@orderingParty.organization.code
  * @param {TransportDetails} transportDetails The details for the transport
  * @param {TransportDetails} releaseTransportDetails The details for the transport at container release
@@ -561,28 +567,28 @@ concept TransportDetails {
  * @param {String} paymentId Payment id for the transport
  */
 concept MovementDetails {
-  o String orderId 
+  o String orderId
   o TransportDetails transportDetails
   o TransportDetails releaseTransportDetails optional
   o TransportDetails acceptanceTransportDetails optional
   o String paymentId optional
 }
 
-/** 
+/**
  * VesselPortCallDeclaration concept to be used to Add, Change and Cancel VesselPortCall assets
  * All the data is optional and it will depend on the specific transaction
- * @param {String} portCallNumber	The port call number assigned by the Port Authority 
- * @param {String} summaryDeclarationNumber	The customs summary declaration number assigned by Customs
- * @param {Code} portOfCall		The port of call code (UN/LOCODE) and name 
- * @param {Code} nextPortOfCall		The next port of call code (UN/LOCODE) and name 
- * @param {Code} countryOfEntry		The first country of entry in the EU, code and name 
- * @param {DateTime} eta		The estimated time of arrival - ETA (YYYYMMDDTHH:MM)
- * @param {Party} shippingAgent	The party details of the shipping agent
- * @param {String} arrivalVoyageNumber	The arrival voyage number of the vessel
- * @param {Code} vessel		IMO code and name of the vessel
- * @param {Code} flag		ISO code and name of the flag
- * @param {DateTime} activationTime	The customs activation time of the summary declaration for temporary storage
- * @param {Reference[]} dischargePortReferences	The reference types and values associated with the port call. They are indicated in the message implementation guide.
+ * @param {String} portCallNumber -The port call number assigned by the Port Authority
+ * @param {String} summaryDeclarationNumber -The customs summary declaration number assigned by Customs
+ * @param {Code} portOfCall -The port of call code (UN/LOCODE) and name
+ * @param {Code} nextPortOfCall -The next port of call code (UN/LOCODE) and name
+ * @param {Code} countryOfEntry -The first country of entry in the EU, code and name
+ * @param {DateTime} eta -The estimated time of arrival - ETA (YYYYMMDDTHH:MM)
+ * @param {Party} vesselAgent -The party details of the vessel agent
+ * @param {String} arrivalVoyageNumber -The arrival voyage number of the vessel
+ * @param {Code} vessel -IMO code and name of the vessel
+ * @param {Code} flag -ISO code and name of the flag
+ * @param {DateTime} activationTime -The customs activation time of the summary declaration for temporary storage
+ * @param {Reference[]} dischargePortReferences -The reference types and values associated with the port call. They are indicated in the message implementation guide.
  */
 concept VesselPortCallDeclaration {
   o String portCallNumber optional
@@ -591,7 +597,7 @@ concept VesselPortCallDeclaration {
   o Code nextPortOfCall optional
   o Code countryOfEntry optional
   o DateTime eta optional
-  o Party shippingAgent optional
+  o Party vesselAgent optional
   o String arrivalVoyageNumber optional
   o Code vessel optional
   o Code flag optional
@@ -602,37 +608,37 @@ concept VesselPortCallDeclaration {
  * Summary declaration for temporary storage concept
  * A Vessel Port Call can have multiple discharge declarations created by multiple
  * shipping agents whose shipping lines are operating with joint service agreements
- * @param {String} summaryDeclarationNumber The summary declaration for temporary storage number 
- * @param {Party} shippingAgent 		The shipping agent representing the line operating in the vessel
- * @param {DateTime} registrationTime	The time the discharge declaration is generated
- * @param {Reference[]} dischargePortReferences	The reference types and values associated with the discharge declaration. They are indicated in the message implementation guide.
- * @param {String[]} blIds The BillOfLading asset ids comprising the summary declaration for temporary storage. BillOfLading ids take the form of blNumber@carrier.organization.code
+ * @param {String} summaryDeclarationNumber -The summary declaration for temporary storage number
+ * @param {Party} shippingAgent -The shipping agent representing the line operating in the vessel
+ * @param {DateTime} registrationTime -The time the discharge declaration is generated
+ * @param {Reference[]} dischargePortReferences -The reference types and values associated with the discharge declaration. They are indicated in the message implementation guide.
+ * @param {String[]} blIds -The BillOfLading asset ids comprising the summary declaration for temporary storage. BillOfLading ids take the form of blNumber@carrier.organization.code
  */
 concept SummaryDeclaration {
   o String summaryDeclarationNumber
-  o Party shippingAgent 
+  o Party shippingAgent
   o DateTime registrationTime
   o Reference[] dischargePortReferences
   o String[] blIds
 }
 
 /**
- * ShippingAgentDeclaration concept to be used as a base to Add, Change and Cancel BillOfLading and Container assets. 
- * The data comes from a Customs Summary Declaration for Temporary Storage transaction. 
- * The VesselPortCallAsset is updated with the registry of declarations 
+ * ShippingAgentDeclaration concept to be used as a base to Add, Change and Cancel BillOfLading and Container assets.
+ * The data comes from a Customs Summary Declaration for Temporary Storage transaction.
+ * The VesselPortCallAsset is updated with the registry of declarations
  * All the data is optional and it will depend on the specific transaction
- * @param {String} portCallId	The vessel port call id of the shipping agent summary declaration (portCallNumber@porOfCall.code)
- * @param {String} summaryDeclarationNumber The summary declaration for temporary storage number 
- * @param {Party} shippingAgent	The shipping agent party that is presenting the declaration
- * @param {DateTime} registrationTime		The time of submission of the declaration 
- * @param {Reference[]} dischargePortReferences		References included in the discharge declaration
- * @param {Party} dischargeTerminalOperator	The terminal operator at the port of discharge 
- * @param {DeclaredBl} bls	The bill of lading data that will be used as a base to add, change and remove the BillOfLading assets
+ * @param {String} portCallId -The vessel port call id of the shipping agent summary declaration (portCallNumber@porOfCall.code)
+ * @param {String} summaryDeclarationNumber -The summary declaration for temporary storage number
+ * @param {Party} shippingAgent -The shipping agent party that is presenting the declaration
+ * @param {DateTime} registrationTime -The time of submission of the declaration
+ * @param {Reference[]} dischargePortReferences -References included in the discharge declaration
+ * @param {Party} dischargeTerminalOperator -The terminal operator at the port of discharge
+ * @param {DeclaredBl} bls -The bill of lading data that will be used as a base to add, change and remove the BillOfLading assets
  */
 concept ShippingAgentDeclaration {
   o String portCallId
   o String summaryDeclarationNumber optional
-  o Party shippingAgent 
+  o Party shippingAgent
   o DateTime registrationTime
   o Reference[] dischargePortReferences optional
   o Party dischargeTerminalOperator optional
@@ -642,27 +648,27 @@ concept ShippingAgentDeclaration {
 /**
  * Concept to be used in the SummaryDeclaration transactions
  * All the data is optional and it will depend on the specific transaction
- * @param {String} blNumber	The B/L number
- * @param {Party} carrier		The carrier that creates the B/L
- * @param {Party} shippingAgent	The shipping agent party that is presenting the declaration
- * @param {Code} vessel		IMO code and name of the vessel in the B/L
- * @param {flag} flag		Flag code and name of the vessel in the B/L 
- * @param {String} voyageNumber	The voyage number in the B/L
- * @param {Code} placeOfOrigin	Code (UN/LOCODE or ISO) and name of the place of origin 
- * @param {Code} portOfLoading	Code (UN/LOCODE or ISO) and name of the port of loading 
- * @param {Code} portOfTranshipment	Code (UN/LOCODE or ISO) and name of the port of transhipment
- * @param {Code} portOfDischarge	Code (UN/LOCODE or ISO) and name of the port of discharge
- * @param {Code} placeOfDelivery	Code (UN/LOCODE or ISO) and name of the place of delivery
- * @param {Code} countryOfEntry	The first country of entry in the EU, code and name 
- * @param {Code} subsequentTransportMode	Code and name of subsequent transport mode
- * @param {Reference[]} dischargePortReferences	Discharge references for the Bill Of Lading
- * @param {Party} dischargeTerminalOperator	The terminal operator at the port of discharge 
- * @param {Code} dischargeBerth		The berth where it is discharged 
- * @param {GoodsItems[]} goodsItems	The goodsItems of the B/L
- * @param {ContainerDeclaration[]} containers		The containers of the B/L
+ * @param {String} blNumber -The B/L number
+ * @param {Party} carrier -The carrier that creates the B/L
+ * @param {Party} shippingAgent -The shipping agent party that is presenting the declaration
+ * @param {Code} vessel -IMO code and name of the vessel in the B/L
+ * @param {flag} flag -Flag code and name of the vessel in the B/L
+ * @param {String} voyageNumber -The voyage number in the B/L
+ * @param {Code} placeOfOrigin -Code (UN/LOCODE or ISO) and name of the place of origin
+ * @param {Code} portOfLoading -Code (UN/LOCODE or ISO) and name of the port of loading
+ * @param {Code} portOfTranshipment -Code (UN/LOCODE or ISO) and name of the port of transhipment
+ * @param {Code} portOfDischarge -Code (UN/LOCODE or ISO) and name of the port of discharge
+ * @param {Code} placeOfDelivery -Code (UN/LOCODE or ISO) and name of the place of delivery
+ * @param {Code} countryOfEntry -The first country of entry in the EU, code and name
+ * @param {Code} subsequentTransportMode -Code and name of subsequent transport mode
+ * @param {Reference[]} dischargePortReferences -Discharge references for the Bill Of Lading
+ * @param {Party} dischargeTerminalOperator -The terminal operator at the port of discharge
+ * @param {Code} dischargeBerth	 -The berth where it is discharged
+ * @param {GoodsItems[]} goodsItems -The goodsItems of the B/L
+ * @param {ContainerDeclaration[]} containers -The containers of the B/L
  */
 concept BlDeclaration {
-  o String blNumber 
+  o String blNumber
   o Party carrier
   o Party shippingAgent optional
   o Code vessel optional
@@ -685,42 +691,42 @@ concept BlDeclaration {
  * Booking Confirmation concept
  * A booking number shall be unique for each carrier
  * The specification of document references, additional info and nature of cargo are described in the message guide
- * @param {String} bookingNumber	The booking number
- * @param {Party} carrier		The carrier that creates the B/L
- * @param {Party} carrierBookingOffice	The carrier booking office party
- * @param {Party} loadingShippingAgent	The shipping agency that acts on behalf of the carrier during the loading operation
- * @param {DateTime} bookingRequestedDate The date when the booking was requested
- * @param {DateTime} bookingConfirmationDate	The date when the booking was confirmed
- * @param {Code} carriageCondition	The code for the carriage condition (door, pier, rail at origin and destination)
- * @param {Code} vessel		IMO code and name of the vessel in the B/L
- * @param {flag} flag		Flag code and name of the vessel in the B/L 
- * @param {String} voyageNumber	The voyage number in the B/L
- * @param {Code} placeOfOrigin	Code (UN/LOCODE or ISO) and name of the place of origin 
- * @param {Code} portOfLoading	Code (UN/LOCODE or ISO) and name of the port of loading 
- * @param {Code} portOfDischarge	Code (UN/LOCODE or ISO) and name of the port of discharge
- * @param {Code} portOfTranshipment Code (UN/LOCODE or ISO) and name of the last port of transhipment
- * @param {Code} placeOfDelivery	Code (UN/LOCODE or ISO) and name of the place of delivery
- * @param {DateTime} receptionCutOffTime The time until the containers are accepted in the terminal
- * @param {DateTime} estimatedDepartureDate The estimated departure time
- * @param {DateTime} estimatedArrivalDate The estimated date of arrrival 
- * @param {DateTime} estimatedDeliveryDate The estimated date of delivery
- * @param {HaulierArrangement} haulierArrangement		The haulier arrangement at the point of origin (carrier, agent or merchant haulage) 
- * @param {Reference[]} documentReferences Document references associated with the booking
- * @param {Reference[]} additionalInfo References to additional info
- * @param {Party} bookingParty	Booking Party
- * @param {Party} contractParty	The contract party
- * @param {Party} shipper		Shipper party according the B/L
- * @param {Party} consignee	Consignee party according the B/L
- * @param {Party[]} notifyParties	The notify parties
- * @param {Code[]} natureOfCargo Codes describing the nature of the cargo 
- * @param {String} paymentId Payment id for the booking charges 
- * @param {GoodsItems[]} goodsItems	The goodsItems of the B/L
- * @param {EquipmentDetails[]} equipmentDetails	The equipment details requested in the booking
- * @param {String[]} movementIds The list of movement ids associated with this equipment type in the booking
- * @param {String[]} containerNumbers The container numbers assigned to the Booking
+ * @param {String} bookingNumber -The booking number
+ * @param {Party} carrier -The carrier that creates the B/L
+ * @param {Party} carrierBookingOffice -The carrier booking office party
+ * @param {Party} loadingShippingAgent -The shipping agency that acts on behalf of the carrier during the loading operation
+ * @param {DateTime} bookingRequestedDate -The date when the booking was requested
+ * @param {DateTime} bookingConfirmationDate -The date when the booking was confirmed
+ * @param {Code} carriageCondition -The code for the carriage condition (door, pier, rail at origin and destination)
+ * @param {Code} vessel -IMO code and name of the vessel in the B/L
+ * @param {flag} flag -Flag code and name of the vessel in the B/L
+ * @param {String} voyageNumber -The voyage number in the B/L
+ * @param {Code} placeOfOrigin -Code (UN/LOCODE or ISO) and name of the place of origin
+ * @param {Code} portOfLoading -Code (UN/LOCODE or ISO) and name of the port of loading
+ * @param {Code} portOfDischarge -Code (UN/LOCODE or ISO) and name of the port of discharge
+ * @param {Code} portOfTranshipment -Code (UN/LOCODE or ISO) and name of the last port of transhipment
+ * @param {Code} placeOfDelivery -Code (UN/LOCODE or ISO) and name of the place of delivery
+ * @param {DateTime} receptionCutOffTime -The time until the containers are accepted in the terminal
+ * @param {DateTime} estimatedDepartureDate -The estimated departure time
+ * @param {DateTime} estimatedArrivalDate -The estimated date of arrrival
+ * @param {DateTime} estimatedDeliveryDate -The estimated date of delivery
+ * @param {HaulierArrangement} haulierArrangement -The haulier arrangement at the point of origin (carrier, agent or merchant haulage)
+ * @param {Reference[]} documentReferences -Document references associated with the booking
+ * @param {Reference[]} additionalInfo -References to additional info
+ * @param {Party} bookingParty -Booking Party
+ * @param {Party} contractParty -The contract party
+ * @param {Party} shipper -Shipper party according the B/L
+ * @param {Party} consignee -Consignee party according the B/L
+ * @param {Party[]} notifyParties -The notify parties
+ * @param {Code[]} natureOfCargo -Codes describing the nature of the cargo
+ * @param {String} paymentId -Payment id for the booking charges
+ * @param {GoodsItems[]} goodsItems -The goodsItems of the B/L
+ * @param {EquipmentDetails[]} equipmentDetails -The equipment details requested in the booking
+ * @param {String[]} movementIds -The list of movement ids associated with this equipment type in the booking
+ * @param {String[]} containerNumbers -The container numbers assigned to the Booking
  */
 concept BookingConfirmation {
-  o String bookingNumber 
+  o String bookingNumber
   o DateTime bookingRequestDate optional
   o DateTime bookingConfirmationDate optional
   o Code carriageCondition optional
@@ -759,9 +765,9 @@ concept BookingConfirmation {
 
 /**
  * Concept that represents a container list
- * @param {String} portCallId The vessel port call id: portCallNumber@portOfCall.code (i.e. 12018123456@ESVLC)
- * @param {VesselOperation} vesselOperation The vessel operation (load or discharge)
- * @param {ContainerList} containers The list of containers
+ * @param {String} portCallId -The vessel port call id: portCallNumber@portOfCall.code (i.e. 12018123456@ESVLC)
+ * @param {VesselOperation} vesselOperation -The vessel operation (load or discharge)
+ * @param {ContainerList} containers -The list of containers
  */
  concept ContainerList {
   o String portCallId
@@ -770,23 +776,19 @@ concept BookingConfirmation {
  }
 
 /** 
+ * ArrivalNotice Concept
  * Concept to be used in the NotifyArrival transaction
  * The arrival notice will make reference to a BillOfLading asset that was previously declared.
  * All the data that was previously declared is not included in this concept
- * @param {String} blId The B/L id is formed by the blNumber@carrier.organization.code
- * @param {String} blType The B/L type
- * @param {HaulierArrangement} haulierArrangement The type of transport agreed with the customer (merchant, carrier, agent)
- * @param {DateTime} arrivalNoticeDate The date that the arrival notice is created
- * @param {Party} shipper The shipper party
- * @param {Party} consignee The consignee party
- * @param {Party} blHolder The B/L holder that will take charge of the delivery. Normally is the forwarder
- * @param {ExchangeRate} exchange The exchange rate applied to the freight and charges
- * @param {Charge[]} charges The charges to pay
- * @param {Amount} total The total amount to pay
- * @param {PaymentMethod} paymentMethod The payment method for the customer (BANK or CREDIT)
- * @param {String} invoiceNumber The number of the invoice where the charges are reported
- * @param {Integer} freeDemurrageDays The number of free demurrage days since the container is discharged until the comtainer is delivered. 
- * @param {Integer} freeDetentionDays The number of free detention days since the container is delivered until the empty comtainer is returned. 
+ * @param {String} blId -The B/L id is formed by the blNumber@carrier.organization.code
+ * @param {String} blType -The B/L type
+ * @param {HaulierArrangement} haulierArrangement -The type of transport agreed with the customer (merchant, carrier, agent)
+ * @param {DateTime} arrivalNoticeDate -The date that the arrival notice is created
+ * @param {Party} shipper -The shipper party
+ * @param {Party} consignee -The consignee party
+ * @param {Party} blHolder -The B/L holder that will take charge of the delivery. Normally is the forwarder
+ * @param {Integer} freeDemurrageDays -The number of free demurrage days since the container is discharged until the comtainer is delivered. 
+ * @param {Integer} freeDetentionDays -The number of free detention days since the container is delivered until the empty comtainer is returned. 
  */
 concept ArrivalNotice {
   o String blId
@@ -796,15 +798,44 @@ concept ArrivalNotice {
   o Party shipper optional
   o Party consignee 
   o Party blHolder optional
+  o Integer freeDemurrageDays optional
+  o Integer freeDetentionDays optional
+}
+
+/** 
+ * FreightCharges Concept
+ * @param {Party} from -The party that requests the payment
+ * @param {Party} to -The party that the payment is requested to
+ * @param {DateTime} issueDate -The date when the payment request was issued
+ * @param {DateTime} dueDate -The due date of the payment
+ * @param {String} subject -The subject of the payment
+ * @param {Reference[]} references -References associated to the payment
+ * @param {ExchangeRate} exchange -The exchange rate applied to the freight and charges
+ * @param {Charge[]} charges -The charges to pay
+ * @param {Amount} subtotal -The subtotal amount
+ * @param {Charge[]} taxes -The taxes
+ * @param {Amount} total -The total amount to pay
+ * @param {PaymentMethod} paymentMethod -The payment method for the customer (BANK or CREDIT)
+ * @param {String} bankAccount -The account number for the payment
+ * @param {Party} bank -The bank for payment
+ * @param {String} invoiceNumber -The number of the invoice where the charges are reported
+ */
+concept FreightCharges {
+  o Party from 
+  o Party to
+  o DateTime issueDate optional
+  o DateTime dueDate optional
+  o String subject optional
+  o Reference[] references optional
   o ExchangeRate exchange optional
   o Charge[] charges optional
+  o Amount subtotal optional
+  o Charge[] taxes optional
   o Amount total optional
-  o PaymentMethod payment optional
+  o PaymentMethod paymentMethod optional
   o String bankAccount optional
   o Party bank optional
   o String invoiceNumber optional
-  o Integer freeDemurrageDays optional
-  o Integer freeDetentionDays optional
 }
 
 /**
@@ -835,16 +866,16 @@ concept DeliveryOrder {
  * Transport order concept
  * @param {String} orderNumber		The reference assigned to the transport order
  * @param {Code} barCode	The barcode of the transport order. The code will provide the barcode while the name will provide the locator reference
- * @param {DateTime} orderDate The date when the transportOrder was registered 
- * @param {DateTime} requestedShipmentTime The time when the transportOrderingParty requests to ship the goods at the senderParty address 
+ * @param {DateTime} orderDate The date when the transportOrder was registered
+ * @param {DateTime} requestedShipmentTime The time when the transportOrderingParty requests to ship the goods at the senderParty address
  * @param {DateTime} shipmentTime The time when the haulier picks up the goods. In export this date provides the acknowledgment of the sender
  * @param {DateTime} pickupTime The time when the haulier picks up the goods. In export this date provides the acknowledgment of the haulier
- * @param {DateTime} requestedDeliveryTime The time when the transportOrderingParty requests to deliver the goods at the receiverParty address 
+ * @param {DateTime} requestedDeliveryTime The time when the transportOrderingParty requests to deliver the goods at the receiverParty address
  * @param {DateTime} deliveryTime The time when the haulier delivers the goods. In import this date provides the acknowledgment of the haulier
  * @param {DateTime} receptionTime The time when the receiver receives the goods. In import this date provides the acknowledgment of the receiver
  * @param {Party} orderingParty	The party that orders the transport
  * @param {Party} forwardingParty	The party that forwards the transport
- * @param {Party} consignorParty The party that ships the goods. 
+ * @param {Party} consignorParty The party that ships the goods.
  * @param {Party} haulierParty The party that carries the goods.
  * @param {Party} consigneeParty The party that receives the goods.
  * @param {TransportDetails} transportDetails The transport details during the goods receipt or delivery. This info provides the acknowledgement of the haulier.
@@ -876,12 +907,12 @@ concept TransportOrder {
  * ReleaseOrder concept
  * @param {String} orderNumber		The reference assigned to the release order
  * @param {Code} barCode	The barcode of the release order. The code will provide the barcode while the name will provide the locator reference
- * @param {ContainerStatus} status	The container status for the release 
+ * @param {ContainerStatus} status	The container status for the release
  * @param {DateTime} orderDate The date when the releaseOrder was registered
  * @param {DateTime} validFrom The date the releaseOrder is valid from
  * @param {DateTime} expirationDate The date when the releaseOrder will expire
  * @param {DateTime} plannedExecutionTime The time when the haulier plans to arrive to the releaseParty address
- * @param {DateTime} releaseTime The time when the releaseParty delivers the container to the haulier. In import this date provides the acknowledgement of the sender 
+ * @param {DateTime} releaseTime The time when the releaseParty delivers the container to the haulier. In import this date provides the acknowledgement of the sender
  * @param {Party} orderingParty The customer of the releaseParty that orders the release of the container
  * @param {Party} releaseParty The releaseParty that stores the container at the point of release
  * @param {TransportDetails} transportDetails The transport details during the release of the container. In the case it is different from the deliverTransport
@@ -903,21 +934,21 @@ concept ReleaseOrder {
 }
 
 /**
- * Movement order. 
- * For containers, 
- *   -A movement is the transport of a container from a point where it is released by a releaseParty up to a point 
+ * Movement order.
+ * For containers,
+ *   -A movement is the transport of a container from a point where it is released by a releaseParty up to a point
  *    where it is accepted by an acceptanceParty.
- *   -The container releaseParty will require a releaseOrder submitted by the orderingParty and the acceptanceParty will require 
+ *   -The container releaseParty will require a releaseOrder submitted by the orderingParty and the acceptanceParty will require
  *    an acceptanceOrder submitted by the orderingParty.
- *   -The orderingParty of the release or acceptance order will inform about the validFrom and expirationDate. 
- *   -The movement will be made by a haulier. The haulier will require a transportOrder from the ordering party. 
- *   -In case of carrier/agent haulage, the orderingParty will be the shipping agent. 
- *   -In case of merchant haulage, the orderingParty will be the blHolder or the party he has nominated. 
+ *   -The orderingParty of the release or acceptance order will inform about the validFrom and expirationDate.
+ *   -The movement will be made by a haulier. The haulier will require a transportOrder from the ordering party.
+ *   -In case of carrier/agent haulage, the orderingParty will be the shipping agent.
+ *   -In case of merchant haulage, the orderingParty will be the blHolder or the party he has nominated.
  *   -A movement can be subcontracted in its totality or in parts. In this case the movement can be splitted in other different movements.
  *   -The subcontractor of a transportOrder will be its main haulier. The main haulier will become the ordering party of the subcontracted movements.
  *   -Within a movement, the goods can be stripped from the container at the consigneeParty address (import case).
  *   -Alternatively, the goods can be stuffed in the container at the consignorParty address (export case).
- *   -The orderingParty of the transport order will inform about the plannedDeliveryTime or plannedShipmentTime 
+ *   -The orderingParty of the transport order will inform about the plannedDeliveryTime or plannedShipmentTime
  *   -The haulier will inform about the plannedReleaseTime, and plannedAcceptanceTime
  *   -When the container is released, the releaseParty will inform about the releaseTime
  * @param {TransportMode} transportMode The mode of transport of the movement.
@@ -936,19 +967,19 @@ concept MovementOrder {
  * AcceptanceOrder concept
  * @param {String} orderNumber		The reference assigned to the acceptance order
  * @param {Code} barCode	The barcode of the release order. The code will provide the barcode while the name will provide the locator reference
- * @param {ContainerStatus} status	The container status for the acceptance 
+ * @param {ContainerStatus} status	The container status for the acceptance
  * @param {DateTime} orderDate The date when the acceptanceOrder was registered
  * @param {DateTime} validFrom The date the acceptanceOrder is valid from
  * @param {DateTime} expirationDate The date when the acceptanceOrder was registered
  * @param {DateTime} requestedExecutionTime The time when the haulier plans to arrive to the acceptanceParty address
- * @param {DateTime} acceptanceTime The time when the acceptanceParty receives the container from the haulier. In export this date provides the acknowledgment of the consignee 
+ * @param {DateTime} acceptanceTime The time when the acceptanceParty receives the container from the haulier. In export this date provides the acknowledgment of the consignee
  * @param {Party} orderingParty The customer of the acceptanceParty that orders the storage of the container.
  * @param {Party} acceptanceParty The party that accepts the container to store.
  * @param {TransportDetails} transportDetails The transport details during the acceptance of the container. In the case it is different from the deliverTransport
  * @param {Code[]} acceptanceRemarks Remarks reported by the parties involved during the acceptance
  */
 concept AcceptanceOrder {
-  o String orderNumber optional 
+  o String orderNumber optional
   o Code barCode optional
   o ContainerStatus status optional
   o DateTime orderDate optional
@@ -962,7 +993,7 @@ concept AcceptanceOrder {
 }
 
 /**
- * The concept that represents the customs declaration traceability data. 
+ * The concept that represents the customs declaration traceability data.
  * These data is provided in the customs traceability notification process together with the customs event.
  * The details of the customs traceability transaction are provided in the guide published by customs
  * @param {String} documentType The type of customs declaration. The types of documents are reported in the guide published by customs
@@ -994,7 +1025,7 @@ concept CustomsTraceability {
 }
 
 /**
- * The concept that represents the customs event notification data. 
+ * The concept that represents the customs event notification data.
  * These event is provided in the customs traceability notification process together with the customs event.
  * The details of the customs traceability transaction are provided in the guide published by customs
  * @param {String} eventId The event id provided by customs
@@ -1021,7 +1052,7 @@ concept CustomsEvent {
  */
 event BusinessEvent {
   o EventType eventType
-  o EventFunction eventFunction 
+  o EventFunction eventFunction
   o String mainAssetId optional
   o String vesselPortCallId optional
   o String blId optional
@@ -1045,23 +1076,24 @@ asset EventQueue identified by officeId {
 
 /**
  * Asset that represents the stay of a vessel in a port
- * The attributes associated to this asset are compiled from the 
- * Spanish Summary Declaration for Temporary Storage. 
- * @param {String} portCallId	Unique identifier portCallNumber@portOfCall.code (i.e. 12018123456@ESVLC)
- * @param {String} version The version of the asset
- * @param {Status} status		The status of the asset 
- * @param {String} portCallNumber	The port call number assigned by the Port Authority 
- * @param {String} summaryDeclarationNumber	The customs summary declaration number assigned by Customs
- * @param {Code} portOfCall		The port of call code (UN/LOCODE) and name 
- * @param {Code} nextPortOfCall		The next port of call code (UN/LOCODE) and name 
- * @param {Code} countryOfEntry		The first country of entry in the EU, code and name 
- * @param {DateTime} eta		The estimated time of arrival - ETA (YYYYMMDDTHH:MM)
- * @param {Party} shippingAgent	The party details of the shipping agent
- * @param {String} arrivalVoyageNumber	The arrival voyage number of the vessel
- * @param {Code} vessel		IMO code and name of the vessel
- * @param {Code} flag		ISO code and name of the flag
- * @param {DateTime} activationTime	The customs activation time of the summary declaration for temporary storage
- * @param {Reference[]} dischargePortReferences	The reference types and values associated with the port call. They are indicated in the message implementation guide.
+ * The attributes associated to this asset are compiled from the
+ * Spanish Summary -Declaration for Temporary Storage.
+ * @param {String} portCallId -Unique identifier portCallNumber@portOfCall.code (i.e. 12018123456@ESVLC)
+ * @param {String} version -The version of the asset
+ * @param {Status} status -The status of the asset
+ * @param {String} portCallNumber -The port call number assigned by the Port Authority
+ * @param {String} summaryDeclarationNumber -The customs summary declaration number assigned by Customs
+ * @param {Code} portOfCall -The port of call code (UN/LOCODE) and name
+ * @param {Code} nextPortOfCall -The next port of call code (UN/LOCODE) and name
+ * @param {Code} countryOfEntry -The first country of entry in the EU, code and name
+ * @param {DateTime} eta -The estimated time of arrival - ETA (YYYYMMDDTHH:MM)
+ * @param {Party} vesselAgent -The party details of the vessel agent
+ * @param {String} arrivalVoyageNumber -The arrival voyage number of the vessel
+ * @param {Code} vessel -IMO code and name of the vessel
+ * @param {Code} flag -ISO code and name of the flag
+ * @param {DateTime} arrivalTime -The vessel arrival time
+ * @param {DateTime} activationTime -The customs activation time of the summary declaration for temporary storage
+ * @param {Reference[]} dischargePortReferences -The reference types and values associated with the port call. They are indicated in the message implementation guide.
  * @param {SummaryDeclaration[]} declarations	Declarations presented by the carrier agents operating in the vessel
  */
 asset VesselPortCall identified by portCallId {
@@ -1074,10 +1106,11 @@ asset VesselPortCall identified by portCallId {
   o Code nextPortOfCall optional
   o Code countryOfEntry optional
   o DateTime eta optional
-  o Party vesselAgent 
+  o Party vesselAgent
   o String arrivalVoyageNumber optional
   o Code vessel optional
   o Code flag optional
+  o DateTime arrivalTime optional
   o DateTime activationTime optional
   o Reference[] dischargePortReferences optional
   o SummaryDeclaration[] declarations optional
@@ -1086,7 +1119,6 @@ asset VesselPortCall identified by portCallId {
   o Party[] loadingShippingAgents optional
   o Party[] loadingCarriers optional
   o ContainerItem[] dischargeContainers optional
-
   o ContainerItem[] loadingContainers optional
 }
 
@@ -1094,47 +1126,47 @@ asset VesselPortCall identified by portCallId {
  * Bill of Lading asset
  * The bill of lading asset can be used for Master B/L and for House B/L
  * A B/L number shall be unique for each carrier
- * @param {String} blId	Unique identifier for the B/L. It is conformed by blNumber@carrier.organization.code
- * @param {String} version The version of the asset
- * @param {Status} status		The status of the asset 
- * @param {String} blNumber	The B/L number
- * @param {BlType} blType		B/L type 
- * @param {HaulierArrangement} haulierArrangement The type of transport at destination agreed with the customer (merchant, carrier, agent)
- * @param {Party} carrier		The carrier that creates the B/L
- * @param {Party} shippingAgent	The shipping agent party that is presenting the declaration
- * @param {Party} dischargeShippingAgent	The shipping agency that acts on behalf of the carrier during the discharge operation
- * @param {Code} vessel		IMO code and name of the vessel in the B/L
- * @param {flag} flag		Flag code and name of the vessel in the B/L 
- * @param {String} voyageNumber	The voyage number in the B/L
- * @param {String} portCallId	Unique identifier portCallNumber@portOfCall.code (i.e. 12018123456@ESVLC)
- * @param {String} summaryDeclarationNumber	The customs summary declaration number assigned by Customs
- * @param {Code} placeOfOrigin	Code (UN/LOCODE or ISO) and name of the place of origin 
- * @param {Code} portOfLoading	Code (UN/LOCODE or ISO) and name of the port of loading 
- * @param {Code} portOfDischarge	Code (UN/LOCODE or ISO) and name of the port of discharge
- * @param {Code} portOfTranshipment Code (UN/LOCODE or ISO) and name of the last port of transhipment
- * @param {Code} placeOfDelivery	Code (UN/LOCODE or ISO) and name of the place of delivery
- * @param {Code} countryOfEntry	The first country of entry in the EU, code and name 
- * @param {Code} subsequentTransportMode	Code and name of subsequent transport mode
- * @param {Reference[]} dischargePortReferences	Discharge references for the Bill Of Lading
- * @param {DateTime} arrivalNoticeDate	Date when the arrival of the B/L was notified (YYYY-MM-DD)
- * @param {Party} shipper		Shipper party according the B/L
- * @param {Party} consignee	Consignee party according the B/L
- * @param {Party} blHoder		The consignee representative for port operations 
- * @param {GoodsItems[]} goodsItems	The goodsItems of the B/L
- * @param {Container[]} containers	The container assets of the B/L
- * @param {String} paymentId The payment id of the charges
- * @param {Integer} freeDemurrageDays The number of free demurrage days since the container is discharged until the comtainer is delivered. 
- * @param {Integer} freeDetentionDays The number of free detention days since the container is delivered until the empty comtainer is returned. 
- * @param {DateTime} blSurrenderDate The date when the original B/L has been presented, when the bill of lading is not a SEAWAYBILL
- * @param {DateTime} blChargesPaymentDate The date when the B/L charges have been paid, if the customer has not credit with the agency
- * @param {Boolean} consolidated	An indicator that the Master B/L contains House B/Ls
- * @param {BillOfLading} houseBls	The House B/Ls assets associated with the Master B/L
+ * @param {String} blId -Unique identifier for the B/L. It is conformed by blNumber@carrier.organization.code
+ * @param {String} version -The version of the asset
+ * @param {Status} status -The status of the asset
+ * @param {String} blNumber -The B/L number
+ * @param {BlType} blType -B/L type
+ * @param {HaulierArrangement} haulierArrangement -The type of transport at destination agreed with the customer (merchant, carrier, agent)
+ * @param {Party} carrier -The carrier that creates the B/L
+ * @param {Party} shippingAgent -The shipping agent party that is presenting the declaration
+ * @param {Party} dischargeShippingAgent -The shipping agency that acts on behalf of the carrier during the discharge operation
+ * @param {Code} vessel -IMO code and name of the vessel in the B/L
+ * @param {flag} flag -Flag code and name of the vessel in the B/L
+ * @param {String} voyageNumber -The voyage number in the B/L
+ * @param {String} portCallId -Unique identifier portCallNumber@portOfCall.code (i.e. 12018123456@ESVLC)
+ * @param {String} summaryDeclarationNumber -The customs summary declaration number assigned by Customs
+ * @param {Code} placeOfOrigin -Code (UN/LOCODE or ISO) and name of the place of origin
+ * @param {Code} portOfLoading -Code (UN/LOCODE or ISO) and name of the port of loading
+ * @param {Code} portOfDischarge -Code (UN/LOCODE or ISO) and name of the port of discharge
+ * @param {Code} portOfTranshipment -Code (UN/LOCODE or ISO) and name of the last port of transhipment
+ * @param {Code} placeOfDelivery -Code (UN/LOCODE or ISO) and name of the place of delivery
+ * @param {Code} countryOfEntry -The first country of entry in the EU, code and name
+ * @param {Code} subsequentTransportMode -Code and name of subsequent transport mode
+ * @param {Reference[]} dischargePortReferences -Discharge references for the Bill Of Lading
+ * @param {DateTime} arrivalNoticeDate -Date when the arrival of the B/L was notified (YYYY-MM-DD)
+ * @param {Party} shipper -Shipper party according the B/L
+ * @param {Party} consignee -Consignee party according the B/L
+ * @param {Party} blHoder -The consignee representative for port operations
+ * @param {GoodsItems[]} goodsItems -The goodsItems of the B/L
+ * @param {Container[]} containers -The container assets of the B/L
+ * @param {String} paymentId -The payment id of the charges
+ * @param {Integer} freeDemurrageDays -The number of free demurrage days since the container is discharged until the comtainer is delivered.
+ * @param {Integer} freeDetentionDays -The number of free detention days since the container is delivered until the empty comtainer is returned.
+ * @param {DateTime} blSurrenderDate -The date when the original B/L has been presented, when the bill of lading is not a SEAWAYBILL
+ * @param {DateTime} blChargesPaymentDate -The date when the B/L charges have been paid, if the customer has not credit with the agency
+ * @param {Boolean} consolidated -An indicator that the Master B/L contains House B/Ls
+ * @param {BillOfLading} houseBls -The House B/Ls assets associated with the Master B/L
  */
 asset BillOfLading identified by blId {
-  o String blId 
+  o String blId
   o String version
   o Status status
-  o String blNumber 
+  o String blNumber
   o BlType blType optional
   o HaulierArrangement haulierArrangement optional
   o Party carrier
@@ -1172,7 +1204,7 @@ asset BillOfLading identified by blId {
  * The specification of document references, additional info and nature of cargo are described in the message guide
  * @param {String} bookingId	Unique identifier for the booking. It is conformed by bookingNumber@carrier.organization.code
  * @param {String} version The version of the asset
- * @param {Status} status		The status of the asset 
+ * @param {Status} status		The status of the asset
  * @param {String} bookingNumber	The booking number
  * @param {Party} carrier		The carrier that creates the B/L
  * @param {Party} carrierBookingOffice	The carrier booking office party
@@ -1181,18 +1213,18 @@ asset BillOfLading identified by blId {
  * @param {DateTime} bookingConfirmationDate	The date when the booking was confirmed
  * @param {Code} carriageCondition	The code for the carriage condition (door, pier, rail at origin and destination)
  * @param {Code} vessel		IMO code and name of the vessel in the B/L
- * @param {flag} flag		Flag code and name of the vessel in the B/L 
+ * @param {flag} flag		Flag code and name of the vessel in the B/L
  * @param {String} voyageNumber	The voyage number in the B/L
- * @param {Code} placeOfOrigin	Code (UN/LOCODE or ISO) and name of the place of origin 
- * @param {Code} portOfLoading	Code (UN/LOCODE or ISO) and name of the port of loading 
+ * @param {Code} placeOfOrigin	Code (UN/LOCODE or ISO) and name of the place of origin
+ * @param {Code} portOfLoading	Code (UN/LOCODE or ISO) and name of the port of loading
  * @param {Code} portOfDischarge	Code (UN/LOCODE or ISO) and name of the port of discharge
  * @param {Code} portOfTranshipment Code (UN/LOCODE or ISO) and name of the last port of transhipment
  * @param {Code} placeOfDelivery	Code (UN/LOCODE or ISO) and name of the place of delivery
  * @param {DateTime} receptionCutOffTime The time until the containers are accepted in the terminal
  * @param {DateTime} estimatedDepartureDate The estimated departure time
- * @param {DateTime} estimatedArrivalDate The estimated date of arrrival 
+ * @param {DateTime} estimatedArrivalDate The estimated date of arrrival
  * @param {DateTime} estimatedDeliveryDate The estimated date of delivery
- * @param {HaulierArrangement} haulierArrangement		The haulier arrangement at the point of origin (carrier, agent or merchant haulage) 
+ * @param {HaulierArrangement} haulierArrangement		The haulier arrangement at the point of origin (carrier, agent or merchant haulage)
  * @param {Reference[]} documentReferences Document references associated with the booking
  * @param {Reference[]} additionalInfo References to additional info
  * @param {Party} bookingParty	Booking Party
@@ -1201,18 +1233,18 @@ asset BillOfLading identified by blId {
  * @param {Party} consignee	Consignee party according the B/L
  * @param {Party[]} notifyParties	The notify parties
  * @param {Party} vgmParty The party in charge of providing the VGM for all containers in booking
- * @param {Code[]} natureOfCargo Codes describing the nature of the cargo 
- * @param {String} paymentId The payment id of the booking charges 
+ * @param {Code[]} natureOfCargo Codes describing the nature of the cargo
+ * @param {String} paymentId The payment id of the booking charges
  * @param {GoodsItems[]} goodsItems	The goodsItems of the B/L
  * @param {EquipmentDetails[]} equipmentDetails	The equipment details requested in the booking
  * @param {String[]} movementIds The list of movement ids associated with this equipment type in the booking
  * @param {String[]} containerNumbers The container numbers assigned to the Booking
  */
 asset Booking identified by bookingId {
-  o String bookingId 
+  o String bookingId
   o String version
   o Status status
-  o String bookingNumber 
+  o String bookingNumber
   o DateTime bookingRequestDate optional
   o DateTime bookingConfirmationDate optional
   o Code carriageCondition optional
@@ -1250,47 +1282,48 @@ asset Booking identified by bookingId {
 }
 
 
-/** 
+/**
  * Container asset
- * @param {String} cnId	Unique identifier for the asset [containerNumber}@[blNumber].[carrier.organization.code]
- * @param {String} version The version of the asset
- * @param {Status} status	The status of the container asset
- * @param {String} containerNumber	The number of the container
- * @param {String} blNumber	The Master B/L number of the container
- * @param {String} bookingNumber The booking number of the container
- * @param {ContainerStatus} dischargeStatus The container status at discharge 
- * @param {ContainerStatus} loadingStatus The container status at loading 
- * @param {String} summaryDeclarationNumber	The customs summary declaration number assigned by Customs
- * @param {Party} carrier		The carrier party of the B/L
- * @param {Party} loadingShippingAgent	The shipping agent party of the B/L at loading
- * @param {Party} loadingTerminalOperator	The terminal operator at loading 
- * @param {Party} dischargeShippingAgent	The shipping agent party of the B/L at discharge
- * @param {Party} dischargeTerminalOperator	The terminal operator at discharge 
- * @param {Code} dischargeBerth	The berth where it is discharged 
- * @param {Code} summaryContainerType	The ISO code and name of the container type at the summary declaration
- * @param {Code} dischargeContainerType	The ISO code and name of the container type at the discharge declaration
- * @param {Code} fullIndicator	The container can be FCL or LCL 
- * @param {ContainerStatus} dischargeStatus The status of the container at discharge (FULL or EMPTY)
- * @param {ContainerStatus} loadingStatus The status of the container at loading (FULL or EMPTY)
- * @param {DateTime} expectedLoadingTime The expected loading time of the container
- * @param {DateTime} loadingTime The loading time of the container
- * @param {DateTime} expectedDischargeTime The expected discharge time of the container
- * @param {DateTime} dischargeTime The discharge time of the container
- * @param {Code} subsequentTransportMode	Code and name of subsequent transport mode
- * @param {Double} grossWeight	The gross weight of the container (Kg)
- * @param {Double} tareWeight	The tare weight of the container (Kg)
- * @param {Seal[]} seals	The seals attached to the container
- * @param {Boolean} isVGM	If the reported gross weight is VGM certified
- * @param {Party} vgmParty The party in charge of providing the VGM
- * @param {String} vgmPaymentId The payment id for the VGM service
- * @param {GoodsItem[]} goodsItems	The goods items stowed in the container
- * @param {Oversize} oversize	The oversize dimensions of the container
- * @param {Code[]} instructions	Codes and names of stowed instructions
- * @param {String[]} inspections	The inspections required on the container
- * @param {String[]} movementIds The movement ids associated with the container
- * @param {String[]} releaseOrders A list of releaseOrderNumbers associated with this container
- * @param {String[]} acceptanceOrders A list of acceptanceOrderNumbers associated with this container
- * @param {String[]} transportOrders A list of transportOrderNumbers associated with this container
+ * @param {String} cnId -Unique identifier for the asset [containerNumber}@[blNumber].[carrier.organization.code]
+ * @param {String} version -The version of the asset
+ * @param {Status} status -The status of the container asset
+ * @param {String} containerNumber -The number of the container
+ * @param {String} blNumber -The Master B/L number of the container
+ * @param {String} bookingNumber -The booking number of the container
+ * @param {ContainerStatus} dischargeStatus -The container status at discharge
+ * @param {ContainerStatus} loadingStatus -The container status at loading
+ * @param {String} summaryDeclarationNumber -The customs summary declaration number assigned by Customs
+ * @param {Party} carrier -The carrier party of the B/L
+ * @param {Party} loadingShippingAgent -The shipping agent party of the B/L at loading
+ * @param {Party} loadingTerminalOperator -The terminal operator at loading
+ * @param {Party} dischargeShippingAgent -The shipping agent party of the B/L at discharge
+ * @param {Party} dischargeTerminalOperator -The terminal operator at discharge
+ * @param {Code} dischargeBerth -The berth where it is discharged
+ * @param {Code} summaryContainerType -The ISO code and name of the container type at the summary declaration
+ * @param {Code} dischargeContainerType -The ISO code and name of the container type at the discharge declaration
+ * @param {Code} shipmentClause -The container can be FCL, LCL or empty
+ * @param {Code} summaryStatus -The status of the container in the summary delcaration 
+ * @param {ContainerStatus} dischargeStatus -The status of the container at discharge (FULL or EMPTY)
+ * @param {ContainerStatus} loadingStatus -The status of the container at loading (FULL or EMPTY)
+ * @param {DateTime} expectedLoadingTime -The expected loading time of the container
+ * @param {DateTime} loadingTime -The loading time of the container
+ * @param {DateTime} expectedDischargeTime -The expected discharge time of the container
+ * @param {DateTime} dischargeTime -The discharge time of the container
+ * @param {Code} subsequentTransportMode -Code and name of subsequent transport mode
+ * @param {Double} grossWeight -The gross weight of the container (Kg)
+ * @param {Double} tareWeight -The tare weight of the container (Kg)
+ * @param {Seal[]} seals -The seals attached to the container
+ * @param {Boolean} isVGM -If the reported gross weight is VGM certified
+ * @param {Party} vgmParty -The party in charge of providing the VGM
+ * @param {String} vgmPaymentId -The payment id for the VGM service
+ * @param {GoodsItem[]} goodsItems -The goods items stowed in the container
+ * @param {Oversize} oversize -The oversize dimensions of the container
+ * @param {Code[]} instructions -Codes and names of stowed instructions
+ * @param {String[]} inspections -The inspections required on the container
+ * @param {String[]} movementIds -The movement ids associated with the container
+ * @param {String[]} releaseOrders -A list of releaseOrderNumbers associated with this container
+ * @param {String[]} acceptanceOrders -A list of acceptanceOrderNumbers associated with this container
+ * @param {String[]} transportOrders -A list of transportOrderNumbers associated with this container
  */
 asset Container identified by cnId {
   o String cnId
@@ -1299,8 +1332,9 @@ asset Container identified by cnId {
   o String containerNumber
   o String blNumber optional
   o String bookingNumber optional
-  o ContainerStatus summaryStatus optional
+  o Code shipmentClause optional
   o ContainerStatus dischargeStatus optional
+  o ContainerStatus loadingStatus optional
   o String summaryDeclarationNumber optional
   o Party carrier optional
   o Party loadingShippingAgent optional
@@ -1312,6 +1346,10 @@ asset Container identified by cnId {
   o Boolean inConsolidatedLoadingOrder optional
   o Code summaryContainerType optional
   o Code dischargeContainerType optional
+  o DateTime expectedLoadingTime optional
+  o DateTime loadingTime optional
+  o DateTime expectedDischargeTime optional
+  o DateTime dischargeTime optional
   o Code subsequentTransportMode optional
   o Double grossWeight optional
   o Double tareWeight optional
@@ -1324,39 +1362,38 @@ asset Container identified by cnId {
   o Code[] instructions optional
   o String[] inspections optional
   o String[] movementIds optional
-  o String mainTransportOrder optional
   o String[] releaseOrders optional
   o String[] acceptanceOrders optional
   o String[] transportOrders optional
  }
 
 /**
- * Movement asset. 
- * For containers, 
- *   -A movement is the transport of a container from a point where it is released by a releaseParty up to a point 
+ * Movement asset.
+ * For containers,
+ *   -A movement is the transport of a container from a point where it is released by a releaseParty up to a point
  *    where it is accepted by an acceptanceParty.
- *   -The container releaseParty will require a releaseOrder submitted by the releaseCustomerParty and the acceptanceParty will require 
+ *   -The container releaseParty will require a releaseOrder submitted by the releaseCustomerParty and the acceptanceParty will require
  *    an acceptanceOrder submitted by the acceptanceCustomerParty.
- *   -The releaseCustomerParty will inform about the releaseExpirationDate. 
+ *   -The releaseCustomerParty will inform about the releaseExpirationDate.
  *   -The acceptanceCustomterParty will inform about the acceptanceExpirationDate.
- *   -The movement will be made by a haulier. The haulier will require a transportOrder from the transport ordering party. 
- *   -In case of carrier/agent haulage, the transportOrderingParty will be the shipping agent. 
- *   -In case of merchant haulage, the transportOrderingParty will be the blHolder or the party he has nominated. 
+ *   -The movement will be made by a haulier. The haulier will require a transportOrder from the transport ordering party.
+ *   -In case of carrier/agent haulage, the transportOrderingParty will be the shipping agent.
+ *   -In case of merchant haulage, the transportOrderingParty will be the blHolder or the party he has nominated.
  *   -A movement can be subcontracted in its totality or in parts. In this case the movement can be splitted in other different movements.
  *   -The subcontractor of a transportOrder will be its haulier. The haulier will become the the transport ordering party of the subcontracted movements.
  *   -Within a movement, the goods can be stripped from the container at the receiverParty address (import case).
  *   -Alternatively, the goods can be stuffed in the container at the shipperParty address (export case).
- *   -The transportOrderingParty will inform about the plannedDeliveryTime or plannedShipmentTime 
+ *   -The transportOrderingParty will inform about the plannedDeliveryTime or plannedShipmentTime
  *   -The haulier will inform about the plannedReleaseTime and plannedAcceptanceTime
  *   -When the container is released, the releaseParty will inform about the releaseTime
- * @param {String} movementId The id of the movement. This id will depend on the asset the movement is generated from
- * @param {String} version The version of the asset
- * @param {Status} status The status of the movement. 
- * @param {TransportMode} transportMode The mode of transport of the movement.
- * @param {ReleaseOrder} releaseOrder The release order for the movement
- * @param {TransportOrder} transportOrder The transport order for the movement
- * @param {AcceptanceOrder} acceptanceOrder The acceptance order for the movement
- * @param {String[]} movementIds The list of movement ids that this movement is splitted into
+ * @param {String} movementId -The id of the movement. This id will depend on the asset the movement is generated from
+ * @param {String} version -The version of the asset
+ * @param {Status} status -The status of the movement.
+ * @param {TransportMode} transportMode -The mode of transport of the movement.
+ * @param {ReleaseOrder} releaseOrder -The release order for the movement
+ * @param {TransportOrder} transportOrder -The transport order for the movement
+ * @param {AcceptanceOrder} acceptanceOrder -The acceptance order for the movement
+ * @param {String[]} movementIds -The list of movement ids that this movement is splitted into
  */
 asset Movement identified by movementId {
   o String movementId
@@ -1383,7 +1420,7 @@ asset Movement identified by movementId {
  * @param {Stirng} customsReleaseStatus The customs release status reported in the last customs event
  */
 asset CustomsDeclaration identified by mrnId {
-  o String mrnId 
+  o String mrnId
   o String version
   o Status status
   o Code documentType optional
@@ -1419,30 +1456,30 @@ asset CustomsDeclaration identified by mrnId {
 
 /**
  * Payment asset
- * @param {String} paymentId The paymentId will be assigned by the transaction that registers the payment
- * @param {String} version The version of the asset
- * @param {Status} status The status of the payment
- * @param {Party} from The party that requests the payment
- * @param {Party} to The party that the payment is requested to
- * @param {DateTime} issueDate The date when the payment request was issued
- * @param {DateTime} dueDate The due date of the payment
- * @param {DateTime} paymentDate The date of payment 
- * @param {String} invoiceNumber The number of the invoice where the charges are reported
- * @param {String} subject The subject of the payment
- * @param {Reference[]} references References associated to the payment
- * @param {ExgangeRate} exchange	The exchange rate of the charges applied at destination
- * @param {Charge[]} charges	The charges 
- * @param {Amount} subtotal	The subtotal amount
- * @param {Charge[]} taxes	The taxes 
- * @param {Amount} total		The total amount 
- * @param {PaymentMethod} payment The payment method for the customer (BANK or CREDIT)
- * @param {String} bankAccoutnt The bank bankAccount
- * @param {Party} bank The bank
- * @param {String} proofOfPayment The proof of payment
+ * @param {String} paymentId -The paymentId will be assigned by the transaction that registers the payment
+ * @param {String} version -The version of the asset
+ * @param {Status} status -The status of the payment
+ * @param {Party} from -The party that requests the payment
+ * @param {Party} to -The party that the payment is requested to
+ * @param {DateTime} issueDate -The date when the payment request was issued
+ * @param {DateTime} dueDate -The due date of the payment
+ * @param {DateTime} paymentDate -The date of payment
+ * @param {String} invoiceNumber -The number of the invoice where the charges are reported
+ * @param {String} subject -The subject of the payment
+ * @param {Reference[]} references -References associated to the payment
+ * @param {ExgangeRate} exchange -The exchange rate of the charges applied at destination
+ * @param {Charge[]} charges -The charges
+ * @param {Amount} subtotal -The subtotal amount
+ * @param {Charge[]} taxes -The taxes
+ * @param {Amount} total -The total amount
+ * @param {PaymentMethod} paymentMethod -The payment method for the customer (BANK or CREDIT)
+ * @param {String} bankAccoutnt -The bank bankAccount
+ * @param {Party} bank -The bank
+ * @param {String} proofOfPayment -The proof of payment
  */
 asset Payment identified by paymentId {
   o String paymentId
-  o String version 
+  o String version
   o Status status
   o Party from optional
   o Party to optional
@@ -1454,8 +1491,12 @@ asset Payment identified by paymentId {
   o Reference[] references optional
   o ExchangeRate exchange optional
   o Charge[] charges optional
+  o Amount subtotal optional
+  o Charge[] taxes optional
   o Amount total optional
-  o PaymentMethod paymentMethod optional
+  o PaymentMethod paymentMethod
+  o Amount payed optional
+  o Amount pending optional
   o String bankAccount optional
   o Party bank optional
   o String proofOfPayment optional
@@ -1493,11 +1534,11 @@ transaction CancelVesselPortCall {
 
 /**
  * Notifies the arrival of a vessel
- * @param {String} vesselPortCallId The vessel port call identifier
- * @param {DateTime} arrivalTime 
+ * @param {String} portCallId The vessel port call identifier
+ * @param {DateTime} arrivalTime
  */
 transaction VesselArrived {
-  o String vesselPortCallId
+  o String portCallId
   o DateTime arrivalTime
 }
 
@@ -1571,16 +1612,16 @@ transaction GetBillOfLading {
 
 /**
  * Submits an arrival notice for a BillOfLading asset
- * @param {ArrivalNotice} arrivalNotice The arrival notice concept
- * @param {Payment} payment Payment information of charges
+ * @param {ArrivalNotice} arrivalNotice -The arrival notice
+ * @param {FreightCharges} charges - The information of freight charges
  */
  transaction NotifyArrival {
    o ArrivalNotice arrivalNotice
-   o Payment payment optional
+   o FreightCharges charges optional
  }
- 
+
  transaction SetBlCharges {
-   
+
  }
 
 /**
@@ -1603,7 +1644,7 @@ transaction GetBillOfLading {
  */
  transaction RequestDelivery {
   o String blId
-  o DateTime requestedDeliveryDate 
+  o DateTime requestedDeliveryDate
   o HaulierArrangement haulierArrangement optional
  }
 
@@ -1613,11 +1654,11 @@ transaction GetBillOfLading {
  * The delivery order will be  used to follow up the cargo release process
  * The cargo release process can informa about the steps taken to generate the delivery order (surrender of the original B/L, the payment of charges, ...)
  * @param {String} blId The B/L id is formed by the blNumber@carrier.organization.code
- * @param {DeliveryOrder} deliveryOrder The delivery order 
+ * @param {DeliveryOrder} deliveryOrder The delivery order
  */
  transaction BlRelease {
   o String blId
-  o DeliveryOrder deliveryOrder 
+  o DeliveryOrder deliveryOrder
  }
 
 /**
@@ -1629,7 +1670,7 @@ transaction AddBooking {
 }
 
 /**
- * Changes a booking 
+ * Changes a booking
  * @param {BookingConfirmation} bookingConfirmation
  */
 transaction ChangeBooking {
@@ -1637,7 +1678,7 @@ transaction ChangeBooking {
 }
 
 /**
- * Removes a booking 
+ * Removes a booking
  * @param {String} bookingNumber The booking number is formed by bookingNumber@carrier.organization.code
  */
 transaction RemoveBooking {
@@ -1667,7 +1708,7 @@ transaction GetBooking {
 /**
  * Registers a consolidated discharge order from the shipping agency of the vessel
  * @param {Party} vesselAgent The shipping agent of the vessel
- * @param {Party} shippingAgent The list of shipping agents that 
+ * @param {Party} shippingAgent The list of shipping agents that
  */
 transaction ConsolidatedDischargeOrder {
   o Party vesselAgent
@@ -1691,7 +1732,7 @@ transaction CancelConsolidatedDischargeOrder {
  * @param {ContainerList} containerList The list of containers
  */
 transaction DischargeOrder {
-  o Party shippingAgent 
+  o Party shippingAgent
   o ContainerList containerList
 }
 
@@ -1701,7 +1742,7 @@ transaction DischargeOrder {
  * @param {String} vesselPortCallId The identification of the vessel port call
  */
 transaction CancelDischargeOrder {
-  o Party shippingAgent 
+  o Party shippingAgent
   o String vesselPortCallId
 }
 
@@ -1716,7 +1757,7 @@ transaction ExpectedDischargeReport {
 }
 
 /**
- * Registers the discharge report of containers. 
+ * Registers the discharge report of containers.
  * @param {Party} terminalOperator The discharge terminal operator
  * @param {ContainerList} containerList The list of containers
  * @param {Boolean} vesselDischarged Notifies when the vessel is completely discharged and the discharge reporting finished
@@ -1733,7 +1774,7 @@ transaction DischargeReport {
  * @param {ContainerList} containerList The list of containers
  */
 transaction LoadingOrder {
-  o Party shippingAgent 
+  o Party shippingAgent
   o ContainerList containerList
 }
 
@@ -1743,7 +1784,7 @@ transaction LoadingOrder {
  * @param {String} vesselPortCallId The identification of the vessel port call
  */
 transaction CancelLoadingListOrder {
-  o Party shippingAgent 
+  o Party shippingAgent
   o String vesselPortCallIde
 }
 
@@ -1758,7 +1799,7 @@ transaction ConsolidatedLoadingOrder {
 }
 
 /**
- * Cancels a consolidated loading order 
+ * Cancels a consolidated loading order
  * @param {Party} shippingAgent The shipping agent of the vessel
  * @param {ContainerList} containerList The list of containers
  */
@@ -1768,7 +1809,7 @@ transaction CancelConsolidatedLoadingOrder {
 }
 
 /**
- * Registers the loading report of containers. 
+ * Registers the loading report of containers.
  * @param {Party} terminalOperator The loading terminal operator
  * @param {ContainerList} containerList The list of containers
  * @param {Boolean} vesselLoaded Notifies when the vessel is completely loaded and the load reporting finished
@@ -1787,7 +1828,7 @@ transaction LoadingReport {
  * @param {ContainerList} containerList The list of containers
  */
 transaction AddContainers {
-  o Party shippingAgent 
+  o Party shippingAgent
   o Boolean consolidated
   o ContainerList containerList
 }
@@ -1799,7 +1840,7 @@ transaction AddContainers {
  * @param {ContainerList} containerList The list of containers
  */
 transaction ChangeContainers {
-  o Party shippingAgent 
+  o Party shippingAgent
   o Boolean consolidated
   o ContainerList containerList
 }
@@ -1811,7 +1852,7 @@ transaction ChangeContainers {
  * @param {ContainerList} containerList The list of containers
  */
 transaction RemoveContainers {
-  o Party shippingAgent 
+  o Party shippingAgent
   o Boolean consolidated
   o ContainerList containerList
 }
@@ -1824,7 +1865,7 @@ transaction RemoveContainers {
  * @param {ContainerList} containerList The list of containers
  */
 transaction GetContainerList {
-  o Party shippingAgent 
+  o Party shippingAgent
   o VesselOperation VesselOperation
   o Boolean consolidated
   o ContainerList containerList
@@ -1848,11 +1889,11 @@ transaction GetContainer {
  */
  transaction ContainerRelease {
   o String cnId
-  o MovementOrder movementOrder 
+  o MovementOrder movementOrder
  }
 
 /**
- * Transaction to provide an empty container for a booking  
+ * Transaction to provide an empty container for a booking
  * Usually the container number will not be provided in this transaction
  * @param {String} bookingId The booking id is formed by the bookingNumber@carrier.organization.code
  * @param {Code} containerType The type of container that shall be released to the haulier
@@ -1861,80 +1902,80 @@ transaction GetContainer {
  */
  transaction BookingRelease {
   o String bookingId
-  o Code containerType 
+  o Code containerType
   o String containerNumber optional
-  o MovementOrder movementOrder 
+  o MovementOrder movementOrder
  }
 
 /**
- * Transaction to cancel a release order. 
+ * Transaction to cancel a release order.
  * This transaction can only be made by the ordering party or the PCS
- * @param {String} orderNumber The release order number 
- * @param {String} orderingPartyCode The code of the ordering party. 
+ * @param {String} orderNumber The release order number
+ * @param {String} orderingPartyCode The code of the ordering party.
  */
 transaction CancelReleaseOrder {
   o String orderNumber
-  o String orderingPartyCode 
+  o String orderingPartyCode
 }
 
 /**
- * Transaction to return a container. 
- * To return a container, the release order number may be indicated. If not, the movement will be automatically assigned 
+ * Transaction to return a container.
+ * To return a container, the release order number may be indicated. If not, the movement will be automatically assigned
  * This transaction can only be made by the shipping agent
  * @param {String} cnId The container id is formed by the cnNumber@blNumber@carrier.organization.code
  * @param {MovementOrder} movement The container empty return movement transaccion. It will include only the acceptance order and may include the references to the release and transport order numbers.
  */
 transaction ContainerReturn {
   o String cnId
-  o Movement movement 
+  o Movement movement
 }
 
 /**
- * Transaction to order the acceptance of a full container for a booking  
+ * Transaction to order the acceptance of a full container for a booking
  * Usually the container number will not be provided in this transaction and will be notified afterwards
  * @param {String} bookingId The booking id is formed by the bookingNumber@carrier.organization.code
  * @param {Code} containerType The type of container that shall be released to the haulier
  * @param {String} containerNumber The container number will only be specified when the agent requests a specific container number in advance
- * @param {MovementOrder} movementOrder The container movement transaction. It will include the full acceptance order 
+ * @param {MovementOrder} movementOrder The container movement transaction. It will include the full acceptance order
  */
  transaction BookingAcceptance {
   o String bookingId
-  o Code containerType 
-  o MovementOrder movementOrder 
+  o Code containerType
+  o MovementOrder movementOrder
  }
 
 /**
- * Transaction to cancel an acceptance order. 
+ * Transaction to cancel an acceptance order.
  * This transaction can only be made by the ordering party or the PCS
- * @param {String} orderNumber The acceptance order number 
- * @param {String} orderingPartyCode The code of the ordering party. 
+ * @param {String} orderNumber The acceptance order number
+ * @param {String} orderingPartyCode The code of the ordering party.
  */
 transaction CancelAcceptanceOrder {
   o String orderNumber
-  o String orderingPartyCode 
+  o String orderingPartyCode
 }
 
 /**
- * Transaction to transport a container. 
- * To transport a container, the release or acceptance order number may be indicated. If not, the movement will be automatically assigned 
- * This transaction can only be made by the blHolder for merchant haulage or by the shipping agent otherwise 
+ * Transaction to transport a container.
+ * To transport a container, the release or acceptance order number may be indicated. If not, the movement will be automatically assigned
+ * This transaction can only be made by the blHolder for merchant haulage or by the shipping agent otherwise
  * @param {String} cnId The container id is formed by the cnNumber@blNumber@carrier.organization.code
- * @param {Movement} movement The container transport order transaction. It will include the transport order and may include the references to the release and acceptance order numbers. 
+ * @param {Movement} movement The container transport order transaction. It will include the transport order and may include the references to the release and acceptance order numbers.
  */
 transaction ContainerTransport {
   o String cnId
-  o Movement movement 
+  o Movement movement
 }
 
-/** 
- * Transaction to subcontract transport 
+/**
+ * Transaction to subcontract transport
  * The new transport order can be made by the haulier of the movement (movement type will be always carrier haulage)
  * When subcontracting it is enough to indicate in the subcontracted movement:
  *   -indicate the release order number to transfer the container release order to the subcontractor
  *   -indicate the acceptance order number to transfer the container acceptance order number to the subcontractor
- *   -indicate the transport order number, date and new haulier. 
+ *   -indicate the transport order number, date and new haulier.
  * The rest of the data elements will be transferred from the main order.
- * If there are new release or acceptance parties in the movement it will be necesary to create new release and acceptance orders by the haulier 
+ * If there are new release or acceptance parties in the movement it will be necesary to create new release and acceptance orders by the haulier
  * @param {Movement} movement The current movement details that will be subcontracted (totally or partially)
  * @param {Movement} subcontractMovement The subcontracted movement details
  */
@@ -1944,26 +1985,26 @@ transaction SubcontractTransport {
 }
 
 /**
- * Transaction to cancel a transportOrder. 
+ * Transaction to cancel a transportOrder.
  * This transaction can only be made by the ordering party or the PCS
- * @param {String} orderNumber The transport order number 
- * @param {String} orderingPartyCode The code of the ordering party. 
+ * @param {String} orderNumber The transport order number
+ * @param {String} orderingPartyCode The code of the ordering party.
  */
 transaction CancelTransportOrder {
   o String orderNumber
-  o String orderingPartyCode 
+  o String orderingPartyCode
 }
 
 /**
- * Transaction to cancel a movement. 
+ * Transaction to cancel a movement.
  * This transaction can only be made by the ordering party or the PCS
  * It will cancel the orders of the movement generated by the ordering party
- * @param {String} orderNumber The transport order number 
- * @param {String} orderingPartyCode The code of the ordering party. 
+ * @param {String} orderNumber The transport order number
+ * @param {String} orderingPartyCode The code of the ordering party.
  */
 transaction CancelMovement {
   o String orderNumber
-  o String orderingPartyCode 
+  o String orderingPartyCode
 }
 
 /**
@@ -1979,92 +2020,92 @@ transaction VGMRequest {
 }
 
 transaction VGMNotification {
-  o String bookingId 
-  o String containerNumber 
-  o Double vgm 
+  o String bookingId
+  o String containerNumber
+  o Double vgm
   o Payment payment optional
 }
 
 /**
- * Transaction to notify the movement details of the haulier. 
+ * Transaction to notify the movement details of the haulier.
  * To identify the movement it can be used the transport, release or acceptance orderId.
- * To transport a container, the release or acceptance order number may be indicated. If not, the movement will be automatically assigned 
+ * To transport a container, the release or acceptance order number may be indicated. If not, the movement will be automatically assigned
  * If transport details at release or acceptance are not indicated, they are asumed to be the same as the transportDetails
  * Payment details can be indicated in this transaction
- * This transaction can only be made by the haulier 
+ * This transaction can only be made by the haulier
  * @param {MovementDetails} movementDetails The movement details indicated by the haulier
  */
 transaction NotifyMovementDetails {
-  o MovementDetails movementDetails 
+  o MovementDetails movementDetails
   o Payment payment optional
 }
 
 /**
- * Transaction to notify the container release. 
+ * Transaction to notify the container release.
  * This transaction can only be made by the release party or the PCS
- * @param {String} orderNumber The acceptance order number 
- * @param {String} orderingPartyCode The code of the ordering party 
- * @param {DateTime} releaseTime The release time 
+ * @param {String} orderNumber The acceptance order number
+ * @param {String} orderingPartyCode The code of the ordering party
+ * @param {DateTime} releaseTime The release time
  * @param {String} remarks The remarks
  * @param {Party} releaseParty The release party. Only required if current participant is PCS
  */
 transaction ReleaseNotification {
   o String orderNumber
   o String orderingPartyCode
-  o DateTime releaseTime 
+  o DateTime releaseTime
   o String remarks optional
   o Party releaseParty optional
 }
 
 /**
- * Transaction to notify the container acceptance. 
+ * Transaction to notify the container acceptance.
  * This transaction can only be made by the acceptance party or the PCS
- * @param {String} orderNumber The acceptance order number 
- * @param {String} orderingPartyCode The code of the ordering party 
- * @param {DateTime} acceptanceTime The acceptance time 
+ * @param {String} orderNumber The acceptance order number
+ * @param {String} orderingPartyCode The code of the ordering party
+ * @param {DateTime} acceptanceTime The acceptance time
  * @param {String} remarks The remarks
  * @param {Party} acceptanceParty The acceptance party. Only required if current participant is PCS
  */
 transaction AcceptanceNotification {
   o String orderNumber
   o String orderingPartyCode
-  o DateTime acceptanceTime 
+  o DateTime acceptanceTime
   o String remarks optional
   o Party acceptanceParty optional
 }
 
 /**
  * Transaction to notify the goods delivery.
- * The notification of this situation involves the agreement (signature) of the haulier 
+ * The notification of this situation involves the agreement (signature) of the haulier
  * This transaction can only be made by the haulier or the PCS
- * @param {String} orderNumber The transport order number 
+ * @param {String} orderNumber The transport order number
  * @param {String} orderingPartyCode The ordering party code
- * @param {DateTime} deliveryTime The delivery time 
+ * @param {DateTime} deliveryTime The delivery time
  * @param {String} remarks The remarks
  * @param {Party} haulierParty The haulier party. Only required if current participant is PCS
  */
 transaction DeliveryNotification {
   o String orderNumber
   o String orderingPartyCode
-  o DateTime deliveryTime 
+  o DateTime deliveryTime
   o String remarks optional
   o Party haulierParty optional
 }
 
 /**
  * Transaction to notify the receipt of goods.
- * The notification of this situation involves the agreement (signature) of the receiver party 
+ * The notification of this situation involves the agreement (signature) of the receiver party
  * This transaction can only be made by the receiver party or the PCS
- * @param {String} orderNumber The transport order number 
+ * @param {String} orderNumber The transport order number
  * @param {String} orderingPartyCode The ordering party code
- * @param {DateTime} receptionTime The reception time 
+ * @param {DateTime} receptionTime The reception time
  * @param {String} remarks The remarks
  * @param {Party} receiverParty The receiver party. Only required if current participant is PCS
  */
 transaction ReceptionNotification {
   o String orderNumber
   o String orderingPartyCode
-  o DateTime receptionTime 
+  o DateTime receptionTime
   o String remarks optional
   o Party receiverParty optional
 }
@@ -2087,14 +2128,14 @@ transaction RemoveCharges {
 }
 
 /**
- * Transaction to notify a payment 
+ * Transaction to notify a payment
  * @param {String} paymentId The payment id
  * @param {DateTime} paymentDate The requested delivery date
- * @param {String} proofOfPayment The proof of payment 
+ * @param {String} proofOfPayment The proof of payment
  */
  transaction NotifyPayment {
   o String paymentId
-  o DateTime paymentDate 
+  o DateTime paymentDate
   o String proofOfPayment optional
  }
 
